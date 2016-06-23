@@ -26,5 +26,10 @@ namespace TimelineMe
         {
             this.InitializeComponent();
         }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            
+        }
     }
 }
