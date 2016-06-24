@@ -8,6 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <StackPanel Padding="10">
+            <Button x:Name="OpenCameraApp" Click="OpenCameraApp_Click" Content="Open camera"/>
+        </StackPanel>
     </Grid>
 </Page>
