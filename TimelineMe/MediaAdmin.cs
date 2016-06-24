@@ -23,5 +23,7 @@ namespace TimelineMe
             newMedia.currentMediaCVAnalysis = analysisResult;
             _mediaAdmin.ProcessedMediaCollection.Add(newMedia);
         }
+
+
     }
 }
