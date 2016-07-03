@@ -26,5 +26,13 @@ namespace TimelineMe.Views
         {
             this.InitializeComponent();
         }
+
+      
+
+        private void TimelineListView_ItemClick(object sender, ItemClickEventArgs e)
+        {   
+            (e.ClickedItem as MediaElement).TransportControls.IsEnabled = true;
+            (e.ClickedItem as MediaElement).IsFullWindow = true;
+        }
     }
 }
