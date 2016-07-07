@@ -22,9 +22,37 @@ namespace TimelineMe
             newMedia.currentMedia = media;
             newMedia.currentMediaCVAnalysis = analysisResult;
             _mediaAdmin.ProcessedMediaCollection.Add(newMedia);
-
         }
 
-
+        public ProcessedFeatures ExtractFeatures(AnalysisResult rawResult)
+        {
+            // TODO: Traverse .Categeroies IEnum (should we abandon this?!)
+            ProcessedFeatures _processedFeatures = new ProcessedFeatures();
+            _processedFeatures.adultScore = rawResult.Adult.AdultScore;
+            if (rawResult.Description.Captions.Length > 0)
+            {
+                _processedFeatures.CaptionsSoloConf = rawResult.Description.Captions[0].Confidence;
+                _processedFeatures.CaptionSoloText = rawResult.Description.Captions[0].Text;
+            }
+            if (rawResult.Tags.Length > 0)
+            {
+                StringBuilder tagsBuilder = new StringBuilder();
+                foreach (var tag in rawResult.Tags)
+                {
+                    tagsBuilder.Append(tag.Name);
+                    tagsBuilder.Append(" ");
+                }
+                _processedFeatures.TagsSpacesSeperated = tagsBuilder.ToString();
+            }
+            return _processedFeatures;
+        }
+    }
+    public struct ProcessedFeatures
+    {
+        public double adultScore;
+        public double CaptionsSoloConf;
+        public string CaptionSoloText;
+        public string TagsSpacesSeperated;
     }
 }
+
