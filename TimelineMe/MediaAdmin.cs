@@ -1,4 +1,10 @@
-﻿using Microsoft.ProjectOxford.Vision.Contract;
+﻿/*
+ * Hello friend:)
+ * We need to make use of Oxford's emotions API here.
+ * Do we need to migirate this class to MediaViewModel ? overkill?
+  TODO: TagsSpacesSeperated was intended to be used within search.
+*/
+using Microsoft.ProjectOxford.Vision.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
