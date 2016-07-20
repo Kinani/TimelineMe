@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace TimelineMe.Models
     {
         //TODO: Add emotions props
         //TODO: Add media preview (think of db size plz)
+        [Key]
+        public int MediaId { get; set; }
         public string MediaName { get; set; }
         public DateTime CaptureDate { get; set; }
         public bool IsMerged { get; set; }

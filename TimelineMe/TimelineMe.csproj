@@ -96,6 +96,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20160720215438_MySecondMigiration.cs" />
+    <Compile Include="Migrations\20160720215438_MySecondMigiration.designer.cs">
+      <DependentUpon>20160720215438_MySecondMigiration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MediaContextModelSnapshot.cs" />
     <Compile Include="Models\MediaContext.cs" />
     <Compile Include="ViewModels\MediaViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
