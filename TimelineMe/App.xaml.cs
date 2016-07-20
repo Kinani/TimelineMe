@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TimelineMe.Models;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -26,6 +28,11 @@ namespace TimelineMe
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            using (var db = new MediaContext())
+            {
+                db.Database.Migrate();
+            }
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
