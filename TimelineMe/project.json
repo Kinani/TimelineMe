@@ -5,6 +5,7 @@
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Microsoft.ProjectOxford.Common": "1.0.308",
     "Microsoft.ProjectOxford.Vision": "1.0.354",
+    "MvvmLight": "5.3.0",
     "runtime.native.System.IO.Compression": "4.1.0",
     "runtime.win7.System.Private.Uri": {
       "version": "4.0.1",
