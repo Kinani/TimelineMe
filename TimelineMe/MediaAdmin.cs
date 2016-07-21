@@ -15,20 +15,34 @@ using Windows.Storage;
 using System.IO;
 using Microsoft.ProjectOxford.Emotion.Contract;
 using Microsoft.ProjectOxford.Emotion;
+using TimelineMe.Models;
 
 namespace TimelineMe
 {
     public class MediaAdmin
     {
-        private static MediaAdmin _mediaAdmin = new MediaAdmin();
-        private StorageFile currentMedia;
-        private AnalysisResult currentMediaCVAnalysis;
-        public List<MediaAdmin> ProcessedMediaCollection = new List<MediaAdmin>();
+        //private static MediaAdmin _mediaAdmin = new MediaAdmin();
+        //private StorageFile currentMediaFile;
+        //private string currentMediaName; // get data from db
+        //private ProcessedFeatures currentMediaProcessedFeatures; // get data from db
+
+        public StorageFolder mediaFolder;
+        public List<Media> MediaList = new List<Media>();
+
         public MediaAdmin()
         {
             
         }
 
+
+        public async Task Initialize()
+        {
+            await mediaFolder.CreateFolderAsync("MediaFolder", CreationCollisionOption.OpenIfExists);
+            using (var db = new MediaContext())
+            {
+                MediaList = db.Medias.ToList();
+            }
+        }
         private async Task<AnalysisResult> DoVision(StorageFile file)
         {
             VisionServiceClient visonClient = new VisionServiceClient(MyCredentials.OxfordVision);
@@ -44,27 +58,42 @@ namespace TimelineMe
             return await emotionClient.RecognizeAsync(fileStream.AsStream());
         }
 
-        public void AddMedia(StorageFile media, AnalysisResult analysisResult)
-        {
-            // Install DoFeel(), DoVision()
-            // Install ExtractFeature()
-            // For Performance we're going to ExtractFeature after capturing each image immediatly
-            MediaAdmin newMedia = new MediaAdmin();
-            newMedia.currentMedia = media;
-            newMedia.currentMediaCVAnalysis = analysisResult;
-            _mediaAdmin.ProcessedMediaCollection.Add(newMedia);
+
+        public async Task AddMedia(StorageFile media)
+        {   
+            Media newMedia = new Media();
+            newMedia.IsMerged = false;
+            newMedia.MediaName = media.Name;
+            newMedia.CaptureDate = media.DateCreated.DateTime;
+            AnalysisResult analysisResult = await DoVision(media);
+            Emotion[] emotions = await DoFeel(media);
+            newMedia = ExtractFeatures(analysisResult, emotions);
+            using(var db = new MediaContext())
+            {
+                db.Medias.Add(newMedia);
+                db.SaveChanges();
+            }
+            MediaList.Add(newMedia);
         }
 
-        public ProcessedFeatures ExtractFeatures(AnalysisResult rawResult, Emotion[] emotions)
+        public async Task RemoveMedia(StorageFile media)
         {
-            // TODO: Add Emotions extraction
-            // TODO: Traverse .Categeroies IEnum (should we abandon this?!)
-            ProcessedFeatures _processedFeatures = new ProcessedFeatures();
-            _processedFeatures.adultScore = rawResult.Adult.AdultScore;
+            Media toDeleteMedia = MediaList.Where(x => x.MediaName == media.Name).FirstOrDefault();
+            using(var db = new MediaContext())
+            {
+                db.Medias.Remove(toDeleteMedia);
+                db.SaveChanges();
+            }
+            MediaList.Remove(toDeleteMedia);
+        }
+        public Media ExtractFeatures(AnalysisResult rawResult, Emotion[] emotions)
+        {
+            Media _processedMedia = new Media();
+            _processedMedia.adultScore = rawResult.Adult.AdultScore;
             if (rawResult.Description.Captions.Length > 0)
             {
-                _processedFeatures.CaptionsSoloConf = rawResult.Description.Captions[0].Confidence;
-                _processedFeatures.CaptionSoloText = rawResult.Description.Captions[0].Text;
+                _processedMedia.CaptionsSoloConf = rawResult.Description.Captions[0].Confidence;
+                _processedMedia.CaptionSoloText = rawResult.Description.Captions[0].Text;
             }
             if (rawResult.Tags.Length > 0)
             {
@@ -74,17 +103,25 @@ namespace TimelineMe
                     tagsBuilder.Append(tag.Name);
                     tagsBuilder.Append(" ");
                 }
-                _processedFeatures.TagsSpacesSeperated = tagsBuilder.ToString();
+                _processedMedia.TagsSpacesSeperated = tagsBuilder.ToString();
             }
-            return _processedFeatures;
+
+
+            _processedMedia.HighestEmotion = emotions[0].Scores.ToRankedList().ElementAt(0).Value;
+
+
+            _processedMedia.AngerScore = emotions[0].Scores.Anger;
+            _processedMedia.ContemptScore = emotions[0].Scores.Contempt;
+            _processedMedia.DisgustScore = emotions[0].Scores.Disgust;
+            _processedMedia.FearScore = emotions[0].Scores.Fear;
+            _processedMedia.HappinessScore = emotions[0].Scores.Happiness;
+            _processedMedia.NeutralScore = emotions[0].Scores.Neutral;
+            _processedMedia.SadnessScore = emotions[0].Scores.Sadness;
+            _processedMedia.SurpriseScore = emotions[0].Scores.Surprise;
+
+
+
+            return _processedMedia;
         }
-    }
-    public struct ProcessedFeatures
-    {
-        // Add emotions extractions
-        public double adultScore;
-        public double CaptionsSoloConf;
-        public string CaptionSoloText;
-        public string TagsSpacesSeperated;
     }
 }
