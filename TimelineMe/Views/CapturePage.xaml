@@ -8,9 +8,9 @@
     DataContext="{Binding MediaViewModelInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Padding="10">
-            <Button x:Name="OpenCameraApp" Click="OpenCameraApp_Click" Content="Open camera"/>
+    <Grid Background="{Binding YouLastTime}">
+        <StackPanel Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Content="Can't wait to see you today! Click me?" Background="AliceBlue" Opacity="1"/>
         </StackPanel>
     </Grid>
 </Page>
