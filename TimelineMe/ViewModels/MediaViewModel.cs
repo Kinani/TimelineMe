@@ -80,26 +80,26 @@ namespace TimelineMe.ViewModels
             StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
             if (photo != null)
             {
-
+                await AddImage(photo);
             }
         }
         public MediaViewModel()
         {
             
         }
-        private void AddImage()
+        private async Task AddImage(StorageFile image)
         {
-
+            await mediaAdmin.AddMedia(image);
         }
 
-        private void RemoveImage()
+        private async Task RemoveImage(StorageFile image)
         {
-
+            await mediaAdmin.RemoveMedia(image);
         }
 
         private void MergeSelectedImages()
         {
-
+            // TODO
         }
 
 
