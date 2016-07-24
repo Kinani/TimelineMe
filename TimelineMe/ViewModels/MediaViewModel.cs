@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TimelineMe.Models;
 using Windows.Media.Capture;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Xaml.Media;
 
 namespace TimelineMe.ViewModels
@@ -20,9 +21,20 @@ namespace TimelineMe.ViewModels
     public class MediaViewModel : ViewModelBase
     {
         private MediaAdmin mediaAdmin;
+        private ObservableCollection<Media> mediaCollection;
 
-
-        public ObservableCollection<Media> MediaCollection;
+        public ObservableCollection<Media> MediaCollection
+        {
+            get
+            {
+                return mediaCollection;
+            }
+            set
+            {
+                mediaCollection = value;
+                RaisePropertyChanged("MediaCollection");
+            }
+        }
 
         #region Properties    
         private bool isLoading = false;
@@ -96,6 +108,7 @@ namespace TimelineMe.ViewModels
         }
 
         private RelayCommand galleryPageLoaded;
+        
 
         public RelayCommand GalleryPageLoaded
         {
@@ -106,6 +119,11 @@ namespace TimelineMe.ViewModels
                     galleryPageLoaded = new RelayCommand(async () =>
                     {
                         await mediaAdmin.Initialize();
+                        mediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+                        //var uriString = "ms-appdata:///local/CCapture.jpg";
+                        //Uri muUri = new Uri(uriString);
+                        //var file = await StorageFile.GetFileFromApplicationUriAsync(muUri);
+                        //await Launcher.LaunchFileAsync(file);
                     });
                 }
                 return galleryPageLoaded;
@@ -121,7 +139,7 @@ namespace TimelineMe.ViewModels
         public MediaViewModel()
         {
             mediaAdmin = new MediaAdmin();
-            MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+            
         }
         public async Task OpenCameraUI()
         {
@@ -130,8 +148,15 @@ namespace TimelineMe.ViewModels
             //captureUI.PhotoSettings.CroppedSizeInPixels = new Size(200, 200);
 
             StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
+            string x = photo.Path;
             if (photo != null)
             {
+                
+                //TODO: Make sure mediaFolder is initialized before moving.
+                //await photo.MoveAsync(mediaAdmin.mediaFolder);
+                
+                await photo.MoveAsync(ApplicationData.Current.LocalFolder,"timelineme.jpg",
+                    NameCollisionOption.GenerateUniqueName);
                 await AddImage(photo);
             }
         }

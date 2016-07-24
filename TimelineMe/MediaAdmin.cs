@@ -29,15 +29,26 @@ namespace TimelineMe
         public StorageFolder mediaFolder;
         public List<Media> MediaList = new List<Media>();
 
+
+        private StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         public MediaAdmin()
         {
-            mediaFolder = ApplicationData.Current.LocalFolder;
+            
         }
 
 
         public async Task Initialize()
         {
-            await mediaFolder.CreateFolderAsync("MediaFolder", CreationCollisionOption.OpenIfExists);
+            //try
+            //{
+            //    mediaFolder = await localFolder.CreateFolderAsync("MediaFolder", CreationCollisionOption.FailIfExists);
+
+            //}
+            //catch (Exception)
+            //{
+
+                
+            //}
             using (var db = new MediaContext())
             {
                 MediaList = db.Medias.ToList();
@@ -74,6 +85,7 @@ namespace TimelineMe
                 db.SaveChanges();
             }
             MediaList.Add(newMedia);
+
         }
 
         public async Task RemoveMedia(StorageFile media)

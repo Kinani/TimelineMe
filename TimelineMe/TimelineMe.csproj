@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CaptureDateConverter.cs" />
     <Compile Include="Converters\MediaNameConverter.cs" />
     <Compile Include="Migrations\20160720215438_MySecondMigiration.cs" />
     <Compile Include="Migrations\20160720215438_MySecondMigiration.designer.cs">
@@ -146,6 +147,7 @@
     <None Include="TimelineMe_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\timelineme.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

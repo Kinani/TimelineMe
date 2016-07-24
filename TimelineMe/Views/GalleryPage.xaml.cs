@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -41,6 +42,17 @@ namespace TimelineMe.Views
         {   
             (e.ClickedItem as MediaElement).TransportControls.IsEnabled = true;
             (e.ClickedItem as MediaElement).IsFullWindow = true;
+        }
+
+        private void BitmapImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            Debug.WriteLine(e.ErrorMessage);
+        }
+
+        private void BitmapImage_ImageOpened(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(e.OriginalSource);
+
         }
     }
 }

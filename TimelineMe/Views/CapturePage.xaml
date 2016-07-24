@@ -8,7 +8,10 @@
     DataContext="{Binding MediaViewModelInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid >
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appdata:///local/CCapture.jpg"></ImageBrush>
+        </Grid.Background>
         <StackPanel Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Content="Can't wait to see you today! Click me?" Background="AliceBlue" Opacity="1"/>
         </StackPanel>
