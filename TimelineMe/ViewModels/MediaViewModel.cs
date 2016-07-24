@@ -21,8 +21,11 @@ namespace TimelineMe.ViewModels
     public class MediaViewModel : ViewModelBase
     {
         private MediaAdmin mediaAdmin;
-        private ObservableCollection<Media> mediaCollection;
 
+
+        #region Properties    
+
+        private ObservableCollection<Media> mediaCollection;
         public ObservableCollection<Media> MediaCollection
         {
             get
@@ -36,7 +39,6 @@ namespace TimelineMe.ViewModels
             }
         }
 
-        #region Properties    
         private bool isLoading = false;
         public bool IsLoading
         {
@@ -120,10 +122,7 @@ namespace TimelineMe.ViewModels
                     {
                         await mediaAdmin.Initialize();
                         mediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
-                        //var uriString = "ms-appdata:///local/CCapture.jpg";
-                        //Uri muUri = new Uri(uriString);
-                        //var file = await StorageFile.GetFileFromApplicationUriAsync(muUri);
-                        //await Launcher.LaunchFileAsync(file);
+                        
                     });
                 }
                 return galleryPageLoaded;
@@ -148,7 +147,6 @@ namespace TimelineMe.ViewModels
             //captureUI.PhotoSettings.CroppedSizeInPixels = new Size(200, 200);
 
             StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
-            string x = photo.Path;
             if (photo != null)
             {
                 
