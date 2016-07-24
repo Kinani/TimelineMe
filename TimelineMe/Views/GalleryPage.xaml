@@ -8,7 +8,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    DataContext="{Binding MediaViewModelInstance, Source={StaticResource Locator}}"
+    DataContext="{Binding GalleryPageViewModelInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
     
     <Page.Resources>

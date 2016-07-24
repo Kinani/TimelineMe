@@ -17,7 +17,7 @@ using Microsoft.ProjectOxford.Emotion.Contract;
 using Microsoft.ProjectOxford.Emotion;
 using TimelineMe.Models;
 
-namespace TimelineMe
+namespace TimelineMe.Common
 {
     public class MediaAdmin
     {

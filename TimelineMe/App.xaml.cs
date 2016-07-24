@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TimelineMe.Models;
+using TimelineMe.Views;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -21,9 +22,6 @@ namespace TimelineMe
 {   
     sealed partial class App : Application
     {
-        public static Frame MyStaticFrame;
-        public static Windows.UI.Core.CoreDispatcher dispatcher;
-
         public App()
         {
             this.InitializeComponent();
@@ -64,7 +62,7 @@ namespace TimelineMe
             {
                 if (rootFrame.Content == null)
                 {
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(Shell), e.Arguments);
                 }
                 Window.Current.Activate();
             }

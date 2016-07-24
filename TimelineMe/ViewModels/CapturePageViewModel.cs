@@ -1,8 +1,4 @@
-﻿/*
- * Hello friend :)
- * mediaAdmin needs to be initialized with previous sessions(aka restore data from db)
- */
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -14,12 +10,10 @@ using TimelineMe.Common;
 using TimelineMe.Models;
 using Windows.Media.Capture;
 using Windows.Storage;
-using Windows.System;
-using Windows.UI.Xaml.Media;
 
 namespace TimelineMe.ViewModels
 {
-    public class MediaViewModel : ViewModelBase
+    public class CapturePageViewModel : ViewModelBase
     {
         private MediaAdmin mediaAdmin;
 
@@ -53,7 +47,7 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("IsLoading");
 
             }
-            
+
         }
 
         private string youLastTime;
@@ -70,22 +64,6 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("YouLastTime");
             }
         }
-
-        private ImageSource imageItem;
-
-        public ImageSource ImageItem
-        {
-            get
-            {
-                return imageItem;
-            }
-            set
-            {
-                imageItem = value;
-                RaisePropertyChanged("ImageItem");
-            }
-        }
-
         #endregion
 
         #region Commands
@@ -95,7 +73,7 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                if(openCamera == null)
+                if (openCamera == null)
                 {
                     openCamera = new RelayCommand(async () =>
                     {
@@ -109,37 +87,11 @@ namespace TimelineMe.ViewModels
                 openCamera = value;
             }
         }
-
-        private RelayCommand galleryPageLoaded;
-        
-
-        public RelayCommand GalleryPageLoaded
-        {
-            get
-            {
-                if(galleryPageLoaded == null)
-                {
-                    galleryPageLoaded = new RelayCommand(async () =>
-                    {
-                        await mediaAdmin.Initialize();
-                        mediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
-                        
-                    });
-                }
-                return galleryPageLoaded;
-            }
-            set
-            {
-                galleryPageLoaded = value;
-            }
-        }
-
-
         #endregion
-        public MediaViewModel()
+
+        public CapturePageViewModel()
         {
             mediaAdmin = new MediaAdmin();
-            
         }
         public async Task OpenCameraUI()
         {
@@ -150,16 +102,16 @@ namespace TimelineMe.ViewModels
             StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
             if (photo != null)
             {
-                
+
                 //TODO: Make sure mediaFolder is initialized before moving.
                 //await photo.MoveAsync(mediaAdmin.mediaFolder);
-                
-                await photo.MoveAsync(ApplicationData.Current.LocalFolder,"timelineme.jpg",
+
+                await photo.MoveAsync(ApplicationData.Current.LocalFolder, "timelineme.jpg",
                     NameCollisionOption.GenerateUniqueName);
                 await AddImage(photo);
             }
         }
-        
+
         private async Task AddImage(StorageFile image)
         {
             await mediaAdmin.AddMedia(image);
@@ -170,11 +122,9 @@ namespace TimelineMe.ViewModels
             await mediaAdmin.RemoveMedia(image);
         }
 
-        private void MergeSelectedImages()
+        private void MergeCapturedImage()
         {
             // TODO
         }
-
-
     }
 }

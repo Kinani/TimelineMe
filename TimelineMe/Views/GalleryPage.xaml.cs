@@ -24,11 +24,11 @@ namespace TimelineMe.Views
     /// </summary>
     public sealed partial class GalleryPage : Page
     {
-        public MediaViewModel Vm
+        public GalleryPageViewModel Vm
         {
             get
             {
-                return (MediaViewModel)DataContext;
+                return (GalleryPageViewModel)DataContext;
             }
         }
         public GalleryPage()

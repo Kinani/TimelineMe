@@ -28,21 +28,28 @@ namespace TimelineMe.ViewModels
 
             //Register your services used here
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
-            SimpleIoc.Default.Register<MediaViewModel>();
+            SimpleIoc.Default.Register<CapturePageViewModel>();
+            SimpleIoc.Default.Register<GalleryPageViewModel>();
 
         }
 
 
-        
-        public MediaViewModel MediaViewModelInstance
+
+        public CapturePageViewModel CapturePageViewModelInstance
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MediaViewModel>();
+                return ServiceLocator.Current.GetInstance<CapturePageViewModel>();
             }
         }
 
-        
+        public GalleryPageViewModel GalleryPageViewModelInstance
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<GalleryPageViewModel>();
+            }
+        }
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
