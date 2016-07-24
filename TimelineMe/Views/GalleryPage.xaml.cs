@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TimelineMe.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,6 +23,13 @@ namespace TimelineMe.Views
     /// </summary>
     public sealed partial class GalleryPage : Page
     {
+        public MediaViewModel Vm
+        {
+            get
+            {
+                return (MediaViewModel)DataContext;
+            }
+        }
         public GalleryPage()
         {
             this.InitializeComponent();

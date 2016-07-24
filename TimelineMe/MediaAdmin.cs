@@ -31,7 +31,7 @@ namespace TimelineMe
 
         public MediaAdmin()
         {
-            
+            mediaFolder = ApplicationData.Current.LocalFolder;
         }
 
 
