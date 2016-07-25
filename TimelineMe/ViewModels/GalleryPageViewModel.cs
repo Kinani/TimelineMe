@@ -18,7 +18,6 @@ namespace TimelineMe.ViewModels
     {
         private MediaAdmin mediaAdmin;
 
-
         #region Properties    
 
         private ObservableCollection<Media> mediaCollection;
@@ -112,15 +111,15 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                if (galleryPageLoaded == null)
-                {
-                    galleryPageLoaded = new RelayCommand(async () =>
+                //if (galleryPageLoaded == null)
+                //{
+                    galleryPageLoaded = new RelayCommand(() =>
                     {
-                        await mediaAdmin.Initialize();
-                        mediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+                        mediaAdmin.Initialize();
+                        MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
 
                     });
-                }
+                //}
                 return galleryPageLoaded;
             }
             set

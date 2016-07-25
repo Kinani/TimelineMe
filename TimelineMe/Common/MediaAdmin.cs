@@ -37,8 +37,9 @@ namespace TimelineMe.Common
         }
 
 
-        public async Task Initialize()
+        public void Initialize()
         {
+            // Edited: Removed Task
             //try
             //{
             //    mediaFolder = await localFolder.CreateFolderAsync("MediaFolder", CreationCollisionOption.FailIfExists);

@@ -116,7 +116,6 @@
     <Compile Include="MyCredentials.cs" />
     <Compile Include="ViewModels\CapturePageViewModel.cs" />
     <Compile Include="ViewModels\GalleryPageViewModel.cs" />
-    <Compile Include="ViewModels\MediaViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AnalyticsPage.xaml.cs">
       <DependentUpon>AnalyticsPage.xaml</DependentUpon>

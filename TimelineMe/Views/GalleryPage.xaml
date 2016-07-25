@@ -16,16 +16,17 @@
         <conv:CaptureDateConverter x:Key="CaptureDateConverter"/>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <interactivity:Interaction.Behaviors>
-            <core:EventTriggerBehavior EventName="Loaded">
-                <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
-            </core:EventTriggerBehavior>
-        </interactivity:Interaction.Behaviors>
+        <!--Paste Here-->
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="CapturedImagesGrid">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Loaded">
+                    <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
             <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" Header="Akona Batata" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
