@@ -31,6 +31,6 @@ namespace TimelineMe.Models
         public double SadnessScore { get; set; }
         public double SurpriseScore { get; set; }
 
-        public double HighestEmotion { get; set; }
+        public string HighestEmotion { get; set; }
     }
 }

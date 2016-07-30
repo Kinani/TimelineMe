@@ -120,7 +120,7 @@ namespace TimelineMe.Common
             }
 
 
-            _processedMedia.HighestEmotion = emotions[0].Scores.ToRankedList().ElementAt(0).Value;
+            _processedMedia.HighestEmotion = emotions[0].Scores.ToRankedList().ElementAt(0).Key;
 
 
             _processedMedia.AngerScore = emotions[0].Scores.Anger;

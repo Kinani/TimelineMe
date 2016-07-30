@@ -14,7 +14,7 @@ namespace TimelineMe.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=Media.db");
+            optionsBuilder.UseSqlite("Filename=MediaT.db");
         }
     }
 

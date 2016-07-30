@@ -8,8 +8,8 @@ using TimelineMe.Models;
 namespace TimelineMe.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    [Migration("20160723222948_MyFifthMigration")]
-    partial class MyFifthMigration
+    [Migration("20160730143405_MyMigration")]
+    partial class MyMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace TimelineMe.Migrations
 
                     b.Property<double>("HappinessScore");
 
-                    b.Property<double>("HighestEmotion");
+                    b.Property<string>("HighestEmotion");
 
                     b.Property<bool>("IsMerged");
 

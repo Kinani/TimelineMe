@@ -36,7 +36,7 @@ namespace TimelineMe.Migrations
 
                     b.Property<double>("HappinessScore");
 
-                    b.Property<double>("HighestEmotion");
+                    b.Property<string>("HighestEmotion");
 
                     b.Property<bool>("IsMerged");
 
