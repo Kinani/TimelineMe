@@ -12,8 +12,22 @@
         <Grid.Background>
             <ImageBrush ImageSource="ms-appdata:///local/CCapture.jpg"></ImageBrush>
         </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <StackPanel Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Content="Can't wait to see you today! Click me?" Background="AliceBlue" Opacity="1"/>
+            <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Background="AliceBlue" Opacity="1">
+                <Button.Content>
+                    <TextBlock Text="Can't wait to see you today! Click me?" TextWrapping="Wrap"/>
+                </Button.Content>
+            </Button>
         </StackPanel>
+        <StackPanel Grid.Row="1">
+            <ProgressBar x:Name="myIndeterminateProbar" Grid.Row="1" IsIndeterminate="True" Visibility="{Binding ProBarVisibility}" Height="70" Margin="0,40,-10,0"/>
+            <TextBlock x:Name="StausTxtBlck" Text="{Binding StatusString}" FontSize="20" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+
+        </StackPanel>
+
     </Grid>
 </Page>

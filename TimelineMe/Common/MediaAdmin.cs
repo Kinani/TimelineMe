@@ -71,7 +71,7 @@ namespace TimelineMe.Common
         }
 
 
-        public async Task AddMedia(StorageFile media)
+        public async Task<bool> AddMedia(StorageFile media)
         {   
             Media newMedia = new Media();
             AnalysisResult analysisResult = await DoVision(media);
@@ -86,7 +86,7 @@ namespace TimelineMe.Common
                 db.SaveChanges();
             }
             MediaList.Add(newMedia);
-
+            return true;
         }
 
         public async Task RemoveMedia(StorageFile media)

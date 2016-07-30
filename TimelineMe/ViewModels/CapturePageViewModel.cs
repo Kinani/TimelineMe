@@ -10,6 +10,7 @@ using TimelineMe.Common;
 using TimelineMe.Models;
 using Windows.Media.Capture;
 using Windows.Storage;
+using Windows.UI.Xaml;
 
 namespace TimelineMe.ViewModels
 {
@@ -34,20 +35,34 @@ namespace TimelineMe.ViewModels
             }
         }
 
-        private bool isLoading = false;
-        public bool IsLoading
+        private string statusString;
+        public string StatusString
         {
             get
             {
-                return isLoading;
+                return statusString;
             }
             set
             {
-                isLoading = value;
-                RaisePropertyChanged("IsLoading");
+                statusString = value;
+                RaisePropertyChanged("StatusString");
 
             }
 
+        }
+        private Visibility proBarVisibility;
+
+        public Visibility ProBarVisibility
+        {
+            get
+            {
+                return proBarVisibility;
+            }
+            set
+            {
+                proBarVisibility = value;
+                RaisePropertyChanged("ProBarVisibility");
+            }
         }
 
         private string youLastTime;
@@ -92,6 +107,7 @@ namespace TimelineMe.ViewModels
         public CapturePageViewModel()
         {
             mediaAdmin = new MediaAdmin();
+            ProBarVisibility = Visibility.Collapsed;
         }
         public async Task OpenCameraUI()
         {
@@ -114,7 +130,12 @@ namespace TimelineMe.ViewModels
 
         private async Task AddImage(StorageFile image)
         {
-            await mediaAdmin.AddMedia(image);
+            bool finished;
+            ProBarVisibility = Visibility.Visible;
+            StatusString = "Some AI spells is being casted, Please wait.";
+            finished = await mediaAdmin.AddMedia(image);
+            ProBarVisibility = Visibility.Collapsed;
+            StatusString = "Done! Thank you friend. you may procced to the Gallery.";
         }
 
         private async Task RemoveImage(StorageFile image)
