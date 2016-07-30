@@ -27,12 +27,13 @@ namespace TimelineMe.Views
         private void Option1Button_Checked(object sender, RoutedEventArgs e)
         {
             Content.Navigate(typeof(CapturePage));
+            NavigationPane.IsPaneOpen = false;
         }
 
         private void Option2Button_Checked(object sender, RoutedEventArgs e)
         {
             Content.Navigate(typeof(GalleryPage));
-
+            NavigationPane.IsPaneOpen = false;
         }
 
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)

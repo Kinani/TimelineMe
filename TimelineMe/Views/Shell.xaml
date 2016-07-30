@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Grid x:Name="LayoutRoot" Background="Transparent"     >
+    <Grid x:Name="LayoutRoot" Background="White">
         <SplitView x:Name="NavigationPane" DisplayMode="CompactOverlay">
             <SplitView.Pane>
 

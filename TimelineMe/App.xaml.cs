@@ -68,7 +68,7 @@ namespace TimelineMe
                 }
                 
                 Window.Current.Activate();
-                //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+                
             }
         }
 
