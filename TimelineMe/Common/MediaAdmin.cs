@@ -99,6 +99,28 @@ namespace TimelineMe.Common
             }
             MediaList.Remove(toDeleteMedia);
         }
+        
+        public async Task MergeMedias(List<StorageFile> mediaFiles,double duration = 2)
+        {
+            /*
+            TODO:
+            check MediaTrimmingPrefrence option
+            output progress
+            */
+            MediaComposition compostion = new MediaComposition();
+            List<MediaClip> mediaClips = new List<MediaClip>();
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            StorageFile timelineOutputFolder = await localFolder.CreateFileAsync(
+                "timelineMeOutput", CreationCollisionOption.GenerateUniqueName);
+            //TODO: make sure this works.
+            for(int i =0; i<= mediaFiles.Count;i++)
+            {
+                mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
+                compostion.Clips.Add(mediaClips[i]);
+            }
+            var saveOperation = await compostion.RenderToFileAsync(timelineOutputFolder, MediaTrimmingPreference.Precise);
+        }
+        
         public Media ExtractFeatures(AnalysisResult rawResult, Emotion[] emotions)
         {
             Media _processedMedia = new Media();
