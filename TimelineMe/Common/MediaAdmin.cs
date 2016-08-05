@@ -16,6 +16,11 @@ using System.IO;
 using Microsoft.ProjectOxford.Emotion.Contract;
 using Microsoft.ProjectOxford.Emotion;
 using TimelineMe.Models;
+using Windows.Media.Editing;
+using Windows.Media.Core;
+using Windows.Foundation;
+using Windows.UI.Core;
+using Windows.Media.Transcoding;
 
 namespace TimelineMe.Common
 {
@@ -119,7 +124,11 @@ namespace TimelineMe.Common
                 compostion.Clips.Add(mediaClips[i]);
             }
             var saveOperation = await compostion.RenderToFileAsync(timelineOutputFolder, MediaTrimmingPreference.Precise);
+
+            
         }
+    
+
         
         public Media ExtractFeatures(AnalysisResult rawResult, Emotion[] emotions)
         {

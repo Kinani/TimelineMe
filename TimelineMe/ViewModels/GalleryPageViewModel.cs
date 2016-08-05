@@ -1,4 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿//    TODO: 
+//    New model for merged videos?? or should we integrate the shit out of it
+//    to the current only Model. + then we need to Imp. commands required for TimelineGrid
+
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -165,9 +169,10 @@ namespace TimelineMe.ViewModels
             await mediaAdmin.RemoveMedia(image);
         }
 
-        private void MergeSelectedImages()
+        private async Task MergeSelectedImages()
         {
             // TODO
+            //await mediaAdmin.MergeMedias();
         }
 
 
