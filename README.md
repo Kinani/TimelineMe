@@ -12,7 +12,7 @@
 
 ### Contribution
 #### Please do remeber to add your MyCredentials file to .gitignore, here's how using terminal:
-* echo "MyCredentials.cs" >> .gitignore
+* echo "TimelineMe/MyCredentials.cs" >> .gitignore
 * git add .gitignore
 * git commit -m "Add MyCredentials to .gitignore"
 
