@@ -79,9 +79,14 @@ namespace TimelineMe.Common
         public async Task<bool> AddMedia(StorageFile media)
         {   
             Media newMedia = new Media();
-            AnalysisResult analysisResult = await DoVision(media);
-            Emotion[] emotions = await DoFeel(media);
-            newMedia = ExtractFeatures(analysisResult, emotions);
+            // TODO: Remove EnableOxford for Debug only
+            if(MyCredentials.EnableOxford == true)
+            {
+                AnalysisResult analysisResult = await DoVision(media);
+                Emotion[] emotions = await DoFeel(media);
+                newMedia = ExtractFeatures(analysisResult, emotions);
+            }
+
             newMedia.IsMerged = false;
             newMedia.MediaName = media.Name;
             newMedia.CaptureDate = media.DateCreated.DateTime;
