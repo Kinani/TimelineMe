@@ -13,7 +13,7 @@ namespace TimelineMe.Models
         public int MediaGroupId { get; set; }
         public DateTime FirstCreatedDate { get; private set; }
         public DateTime LastItemDate { get; set; }
-
+        public string CompostionFileName { get; set; }
 
         public double AngerScoreMean { get; set; }
         public double ContemptScoreMean { get; set; }
