@@ -53,11 +53,11 @@
                       ScrollViewer.HorizontalScrollMode="Enabled"
                       ScrollViewer.VerticalScrollMode="Disabled"
                       >
-                <interactivity:Interaction.Behaviors>
+                <!--<interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="ItemClick">
                         <core:InvokeCommandAction Command="{x:Bind Vm.ItemClicked}" CommandParameter="{Binding}"/>
                     </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
+                </interactivity:Interaction.Behaviors>-->
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Background="Transparent" Orientation="Horizontal"></StackPanel>

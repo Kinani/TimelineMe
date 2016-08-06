@@ -35,12 +35,38 @@ namespace TimelineMe.Migrations
                 {
                     table.PrimaryKey("PK_Medias", x => x.MediaId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "MediaGroups",
+                columns: table => new
+                {
+                    MediaGroupId = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    AngerScoreMean = table.Column<double>(nullable: false),
+                    ContemptScoreMean = table.Column<double>(nullable: false),
+                    DisgustScoreMean = table.Column<double>(nullable: false),
+                    FearScoreMean = table.Column<double>(nullable: false),
+                    FirstCreatedDate = table.Column<DateTime>(nullable: false),
+                    HappinessScoreMean = table.Column<double>(nullable: false),
+                    HighestEmotionMean = table.Column<string>(nullable: true),
+                    LastItemDate = table.Column<DateTime>(nullable: false),
+                    NeutralScoreMean = table.Column<double>(nullable: false),
+                    SadnessScoreMean = table.Column<double>(nullable: false),
+                    SurpriseScoreMean = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaGroups", x => x.MediaGroupId);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Medias");
+
+            migrationBuilder.DropTable(
+                name: "MediaGroups");
         }
     }
 }

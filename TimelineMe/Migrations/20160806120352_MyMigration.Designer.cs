@@ -8,7 +8,7 @@ using TimelineMe.Models;
 namespace TimelineMe.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    [Migration("20160730143405_MyMigration")]
+    [Migration("20160806120352_MyMigration")]
     partial class MyMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,38 @@ namespace TimelineMe.Migrations
                     b.HasKey("MediaId");
 
                     b.ToTable("Medias");
+                });
+
+            modelBuilder.Entity("TimelineMe.Models.MediaGroup", b =>
+                {
+                    b.Property<int>("MediaGroupId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("AngerScoreMean");
+
+                    b.Property<double>("ContemptScoreMean");
+
+                    b.Property<double>("DisgustScoreMean");
+
+                    b.Property<double>("FearScoreMean");
+
+                    b.Property<DateTime>("FirstCreatedDate");
+
+                    b.Property<double>("HappinessScoreMean");
+
+                    b.Property<string>("HighestEmotionMean");
+
+                    b.Property<DateTime>("LastItemDate");
+
+                    b.Property<double>("NeutralScoreMean");
+
+                    b.Property<double>("SadnessScoreMean");
+
+                    b.Property<double>("SurpriseScoreMean");
+
+                    b.HasKey("MediaGroupId");
+
+                    b.ToTable("MediaGroups");
                 });
         }
     }
