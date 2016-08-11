@@ -15,12 +15,14 @@
         <conv:MediaNameConverter x:Key="MediaNameConverter"/>
         <conv:CaptureDateConverter x:Key="CaptureDateConverter"/>
         <conv:HighestEmoToTextConverter x:Key="HighestEmoToTextConverter"/>
+        <conv:SelectionChangedConverter x:Key="SelectionChangedConverter"/>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <!--Paste Here-->
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid x:Name="CapturedImagesGrid">
             <interactivity:Interaction.Behaviors>
@@ -28,10 +30,16 @@
                     <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
-            <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" Header="Akona Batata" >
+            <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" Header="Akona Batata" SelectionMode="Multiple">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="SelectionChanged">
+                        <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
+                                                  InputConverter="{StaticResource SelectionChangedConverter}"
+                                                  InputConverterParameter="{Binding ElementName=CapturedImagesListView}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-
                         <StackPanel Padding="3" Orientation="Horizontal">
                             <Image Width="50" Height="50" Stretch="UniformToFill" Margin="0,0,5,0">
                                 <Image.Source>
@@ -72,5 +80,9 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
+        <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
+            <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}"/>
+            <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="False"/>
+        </CommandBar>
     </Grid>
 </Page>

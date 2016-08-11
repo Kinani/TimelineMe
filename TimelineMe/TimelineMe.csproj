@@ -99,9 +99,14 @@
     <Compile Include="Converters\CaptureDateConverter.cs" />
     <Compile Include="Converters\HighestEmoToTextConverter.cs" />
     <Compile Include="Converters\MediaNameConverter.cs" />
+    <Compile Include="Converters\SelectionChangedConverter.cs" />
     <Compile Include="Migrations\20160806120352_MyMigration.cs" />
     <Compile Include="Migrations\20160806120352_MyMigration.designer.cs">
       <DependentUpon>20160806120352_MyMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20160806121112_MySecondMigration.cs" />
+    <Compile Include="Migrations\20160806121112_MySecondMigration.designer.cs">
+      <DependentUpon>20160806121112_MySecondMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\MediaContextModelSnapshot.cs" />
     <Compile Include="Models\Media.cs" />
@@ -128,6 +133,9 @@
     </Compile>
     <Compile Include="Common\MediaAdmin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\PreviewCompostionPage.xaml.cs">
+      <DependentUpon>PreviewCompostionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -179,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreviewCompostionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

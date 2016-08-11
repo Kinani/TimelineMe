@@ -38,7 +38,7 @@ namespace TimelineMe.Common
         private StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         public MediaAdmin()
         {
-            
+
         }
 
 
@@ -53,8 +53,11 @@ namespace TimelineMe.Common
             //catch (Exception)
             //{
 
-                
+
             //}
+
+
+            // TODO: Possible bug{Wont refresh}
             using (var db = new MediaContext())
             {
                 MediaList = db.Medias.ToList();
@@ -77,10 +80,10 @@ namespace TimelineMe.Common
 
 
         public async Task<bool> AddMedia(StorageFile media)
-        {   
+        {
             Media newMedia = new Media();
             // TODO: Remove EnableOxford for Debug only
-            if(MyCredentials.EnableOxford == true)
+            if (MyCredentials.EnableOxford == true)
             {
                 AnalysisResult analysisResult = await DoVision(media);
                 Emotion[] emotions = await DoFeel(media);
@@ -102,39 +105,188 @@ namespace TimelineMe.Common
         public async Task RemoveMedia(StorageFile media)
         {
             Media toDeleteMedia = MediaList.Where(x => x.MediaName == media.Name).FirstOrDefault();
-            using(var db = new MediaContext())
+            using (var db = new MediaContext())
             {
                 db.Medias.Remove(toDeleteMedia);
                 db.SaveChanges();
             }
             MediaList.Remove(toDeleteMedia);
         }
-        
-        public async Task MergeMedias(List<StorageFile> mediaFiles,double duration = 2)
+
+        public async Task MergeMedias(List<Media> medias, MediaGroup currentMediaGroup = null, double duration = 2)
         {
-            /*
-            TODO:
-            check MediaTrimmingPrefrence option
-            output progress
-            */
-            MediaComposition compostion = new MediaComposition();
-            List<MediaClip> mediaClips = new List<MediaClip>();
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile timelineOutputFolder = await localFolder.CreateFileAsync(
-                "timelineMeOutput", CreationCollisionOption.GenerateUniqueName);
-            //TODO: make sure this works.
-            for(int i =0; i<= mediaFiles.Count;i++)
-            {
-                mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
-                compostion.Clips.Add(mediaClips[i]);
-            }
-            var saveOperation = await compostion.RenderToFileAsync(timelineOutputFolder, MediaTrimmingPreference.Precise);
-
             
-        }
-    
+            // Use Profile for output vid/cmp? file 
 
-        
+
+            List<StorageFile> mediaFiles = new List<StorageFile>();
+            MediaGroup mediaGroup = new MediaGroup();
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            MediaComposition composition = new MediaComposition();
+            List<MediaClip> mediaClips = new List<MediaClip>();
+            StorageFile timelineVidOutputFile;
+            StorageFile timelineCMPOutputFile;
+            bool deleteExistingFile = (currentMediaGroup != null) ? false : true;
+            #region EmotionsMeanTemp
+
+            double tmpAngerScoreMean = 0;
+            double tmpContemptScoreMean = 0;
+            double tmpDisgustScoreMean = 0;
+            double tmpFearScoreMean = 0;
+            double tmpHappinessScoreMean = 0;
+            double tmpNeutralScoreMean = 0;
+            double tmpSadnessScoreMean = 0;
+            double tmpSurpriseScoreMean = 0;
+
+            string tmpHighestEmotionMean = string.Empty;
+
+            #endregion
+
+            foreach (var media in medias)
+            {
+
+                mediaFiles.Add(await StorageFile.GetFileFromApplicationUriAsync(new Uri(
+                        string.Format("ms-appdata:///local/{0}", media.MediaName))));
+
+                tmpAngerScoreMean += media.AngerScore;
+                tmpContemptScoreMean += media.ContemptScore;
+                tmpDisgustScoreMean += media.DisgustScore;
+                tmpFearScoreMean += media.FearScore;
+                tmpHappinessScoreMean += media.HappinessScore;
+                tmpNeutralScoreMean += media.NeutralScore;
+                tmpSadnessScoreMean += media.SadnessScore;
+                tmpSurpriseScoreMean += media.SurpriseScore;
+            }
+            tmpAngerScoreMean = tmpAngerScoreMean / medias.Count;
+            tmpContemptScoreMean = tmpContemptScoreMean / medias.Count;
+            tmpDisgustScoreMean = tmpDisgustScoreMean / medias.Count;
+            tmpFearScoreMean = tmpFearScoreMean / medias.Count;
+            tmpHappinessScoreMean = tmpHappinessScoreMean / medias.Count;
+            tmpNeutralScoreMean = tmpNeutralScoreMean / medias.Count;
+            tmpSadnessScoreMean = tmpSadnessScoreMean / medias.Count;
+            tmpSurpriseScoreMean = tmpSurpriseScoreMean / medias.Count;
+
+            SortedList<string, double> tempForSortingScores = new SortedList<string, double>();
+            tempForSortingScores.Add("AngerScoreMean", tmpAngerScoreMean);
+            tempForSortingScores.Add("ContemptScoreMean", tmpContemptScoreMean);
+            tempForSortingScores.Add("DisgustScoreMean", tmpDisgustScoreMean);
+            tempForSortingScores.Add("FearScoreMean", tmpFearScoreMean);
+            tempForSortingScores.Add("HappinessScoreMean", tmpHappinessScoreMean);
+            tempForSortingScores.Add("NeutralScoreMean", tmpNeutralScoreMean);
+            tempForSortingScores.Add("SadnessScoreMean", tmpSadnessScoreMean);
+            tempForSortingScores.Add("SurpriseScoreMean", tmpSurpriseScoreMean);
+            // TODO: check this.
+            tmpHighestEmotionMean = tempForSortingScores.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+
+            if (currentMediaGroup == null)
+            {
+                timelineVidOutputFile = await localFolder.CreateFileAsync(
+               "timelineMeOutput.mp4", CreationCollisionOption.GenerateUniqueName);
+
+                string CMPFileName = string.Format(timelineVidOutputFile.DisplayName + ".cmp");
+                timelineCMPOutputFile = await localFolder.CreateFileAsync(
+               CMPFileName, CreationCollisionOption.OpenIfExists);
+
+                for (int i = 0; i <= mediaFiles.Count; i++)
+                {
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
+                    composition.Clips.Add(mediaClips[i]);
+                }
+
+
+                using (var db = new MediaContext())
+                {
+                    mediaGroup = new MediaGroup()
+                    {
+                        CompostionFileName = CMPFileName,
+                        LastEditDate = DateTime.Now,
+                        AngerScoreMean = tmpAngerScoreMean,
+                        ContemptScoreMean = tmpContemptScoreMean,
+                        DisgustScoreMean = tmpDisgustScoreMean,
+                        FearScoreMean = tmpFearScoreMean,
+                        HappinessScoreMean = tmpHappinessScoreMean,
+                        NeutralScoreMean = tmpNeutralScoreMean,
+                        SadnessScoreMean = tmpSadnessScoreMean,
+                        SurpriseScoreMean = tmpSurpriseScoreMean,
+                        HighestEmotionMean = tmpHighestEmotionMean
+
+                    };
+
+                }
+                
+                var action = composition.SaveAsync(timelineCMPOutputFile);
+                action.Completed = (info, status) =>
+                {
+                    if (status != AsyncStatus.Completed)
+                    {
+                        //ShowErrorMessage("Error saving composition");
+                    }
+
+                };
+                
+
+
+            }
+            else
+            {
+                using (var db = new MediaContext())
+                {
+                    mediaGroup =
+                        db.MediaGroups.Where(
+                            x => x.CompostionFileName == currentMediaGroup.CompostionFileName).
+                            FirstOrDefault();
+                    // TODO Check this
+                    mediaGroup.LastEditDate = DateTime.Now;
+                    mediaGroup.AngerScoreMean = mediaGroup.AngerScoreMean + tmpAngerScoreMean / 2;
+                    mediaGroup.ContemptScoreMean = mediaGroup.ContemptScoreMean + tmpContemptScoreMean / 2;
+                    mediaGroup.DisgustScoreMean = mediaGroup.DisgustScoreMean + tmpDisgustScoreMean / 2;
+                    mediaGroup.FearScoreMean = mediaGroup.FearScoreMean + tmpFearScoreMean / 2;
+                    mediaGroup.HappinessScoreMean = mediaGroup.HappinessScoreMean + tmpHappinessScoreMean / 2;
+                    mediaGroup.NeutralScoreMean = mediaGroup.NeutralScoreMean + tmpNeutralScoreMean / 2;
+                    mediaGroup.SadnessScoreMean = mediaGroup.SadnessScoreMean + tmpSadnessScoreMean / 2;
+                    mediaGroup.SurpriseScoreMean = mediaGroup.SurpriseScoreMean + tmpSurpriseScoreMean / 2;
+
+                    SortedList<string, double> temptempForSortingScores = new SortedList<string, double>();
+                    temptempForSortingScores.Add("AngerScoreMean", mediaGroup.AngerScoreMean);
+                    temptempForSortingScores.Add("ContemptScoreMean", mediaGroup.ContemptScoreMean);
+                    temptempForSortingScores.Add("DisgustScoreMean", mediaGroup.DisgustScoreMean);
+                    temptempForSortingScores.Add("FearScoreMean", mediaGroup.FearScoreMean);
+                    temptempForSortingScores.Add("HappinessScoreMean", mediaGroup.HappinessScoreMean);
+                    temptempForSortingScores.Add("NeutralScoreMean", mediaGroup.NeutralScoreMean);
+                    temptempForSortingScores.Add("SadnessScoreMean", mediaGroup.SadnessScoreMean);
+                    temptempForSortingScores.Add("SurpriseScoreMean", mediaGroup.SurpriseScoreMean);
+                    // TODO: check this.
+                    mediaGroup.HighestEmotionMean  = temptempForSortingScores.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+                    
+                    db.MediaGroups.Update(mediaGroup);
+                    db.SaveChanges();
+                }
+
+                timelineVidOutputFile = await localFolder.GetFileAsync(currentMediaGroup.CompostionFileName + ".mp4");
+                timelineCMPOutputFile = await localFolder.GetFileAsync(currentMediaGroup.CompostionFileName + ".cmp");
+                composition = await MediaComposition.LoadAsync(timelineCMPOutputFile);
+                //TODO: make sure this works.
+                for (int i = 0; i <= mediaFiles.Count; i++)
+                {
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
+                    composition.Clips.Add(mediaClips[i]);
+                }
+                
+                var action = composition.SaveAsync(timelineCMPOutputFile);
+                action.Completed = (info, status) =>
+                {
+                    if (status != AsyncStatus.Completed)
+                    {
+                        //ShowErrorMessage("Error saving composition");
+                    }
+
+                };
+            }
+
+        }
+
+
+
         public Media ExtractFeatures(AnalysisResult rawResult, Emotion[] emotions)
         {
             Media _processedMedia = new Media();

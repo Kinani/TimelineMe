@@ -21,7 +21,7 @@ namespace TimelineMe.ViewModels
     public class GalleryPageViewModel : ViewModelBase
     {
         private MediaAdmin mediaAdmin;
-
+        private List<Media> selectedMediaCollection;
         #region Properties    
 
         private ObservableCollection<Media> mediaCollection;
@@ -117,18 +117,51 @@ namespace TimelineMe.ViewModels
             {
                 //if (galleryPageLoaded == null)
                 //{
-                    galleryPageLoaded = new RelayCommand(() =>
-                    {
-                        mediaAdmin.Initialize();
-                        MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+                galleryPageLoaded = new RelayCommand(() =>
+                {
+                    mediaAdmin.Initialize();
+                    MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
 
-                    });
+                });
                 //}
                 return galleryPageLoaded;
             }
             set
             {
                 galleryPageLoaded = value;
+            }
+        }
+        private RelayCommand<IList<object>> updateSelectedImages;
+        public RelayCommand<IList<object>> UpdateSelectedImages
+        {
+            get
+            {
+                return updateSelectedImages
+                   ?? (updateSelectedImages = new RelayCommand<IList<object>>(
+                       selectedImages =>
+                       {
+                           selectedMediaCollection = selectedImages.Cast<Media>().ToList();
+                       }));
+            }
+            set
+            {
+                updateSelectedImages = value;
+            }
+        }
+        private RelayCommand mergeSelectedImages;
+        public RelayCommand MergeSelectedImages
+        {
+            get
+            {
+                mergeSelectedImages = new RelayCommand(async () =>
+                {
+                    await MergeImages();
+                });
+                return mergeSelectedImages;
+            }
+            set
+            {
+                mergeSelectedImages = value;
             }
         }
 
@@ -169,10 +202,9 @@ namespace TimelineMe.ViewModels
             await mediaAdmin.RemoveMedia(image);
         }
 
-        private async Task MergeSelectedImages()
+        private async Task MergeImages()
         {
-            // TODO
-            //await mediaAdmin.MergeMedias();
+            await mediaAdmin.MergeMedias(selectedMediaCollection);
         }
 
 

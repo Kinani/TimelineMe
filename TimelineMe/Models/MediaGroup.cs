@@ -12,7 +12,7 @@ namespace TimelineMe.Models
         [Key]
         public int MediaGroupId { get; set; }
         public DateTime FirstCreatedDate { get; private set; }
-        public DateTime LastItemDate { get; set; }
+        public DateTime LastEditDate { get; set; }
         public string CompostionFileName { get; set; }
 
         public double AngerScoreMean { get; set; }
@@ -29,6 +29,7 @@ namespace TimelineMe.Models
 
         public MediaGroup()
         {
+            if(FirstCreatedDate == null)
             FirstCreatedDate = DateTime.Now;
         }
 
