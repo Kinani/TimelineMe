@@ -21,6 +21,7 @@ using Windows.Media.Core;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.Media.Transcoding;
+using Windows.Storage.Streams;
 
 namespace TimelineMe.Common
 {
@@ -111,6 +112,19 @@ namespace TimelineMe.Common
                 db.SaveChanges();
             }
             MediaList.Remove(toDeleteMedia);
+        }
+
+        public async Task<IInputStream> GetThumbnailAsync(MediaGroup mediaGroup)
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            StorageFile mediaGroupCMPFile;
+            MediaComposition mediaComposition;
+
+            mediaGroupCMPFile = await localFolder.GetFileAsync(mediaGroup.CompostionFileName + ".cmp");
+            mediaComposition = await MediaComposition.LoadAsync(mediaGroupCMPFile);
+
+            return await mediaComposition.GetThumbnailAsync(
+                TimeSpan.Zero, 0, 0, VideoFramePrecision.NearestFrame);
         }
 
         public async Task MergeMedias(List<Media> medias, MediaGroup currentMediaGroup = null, double duration = 2)
