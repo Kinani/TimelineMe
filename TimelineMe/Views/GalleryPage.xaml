@@ -16,6 +16,7 @@
         <conv:CaptureDateConverter x:Key="CaptureDateConverter"/>
         <conv:HighestEmoToTextConverter x:Key="HighestEmoToTextConverter"/>
         <conv:SelectionChangedConverter x:Key="SelectionChangedConverter"/>
+        <conv:CompostionFileNameToImageAsyncConverter x:Key="CompostionFileNameToImageAsyncConverter"/>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <!--Paste Here-->
@@ -74,7 +75,11 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            
+                            <Image x:Name="CMPPreviewImage" 
+                                   DataContext="{Binding CompostionFileName,
+                                Converter = {StaticResource CompostionFileNameToImageAsyncConverter}}"
+                                   Source="{Binding Result}"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

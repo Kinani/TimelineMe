@@ -97,6 +97,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CaptureDateConverter.cs" />
+    <Compile Include="Converters\CompostionFileNameToImageAsyncConverter.cs" />
     <Compile Include="Converters\HighestEmoToTextConverter.cs" />
     <Compile Include="Converters\MediaNameConverter.cs" />
     <Compile Include="Converters\SelectionChangedConverter.cs" />
