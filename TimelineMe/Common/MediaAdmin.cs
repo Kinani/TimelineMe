@@ -189,7 +189,7 @@ namespace TimelineMe.Common
                 {
                     mediaGroup = new MediaGroup()
                     {
-                        CompostionFileName = CMPFileName,
+                        CompostionFileName = timelineVidOutputFile.DisplayName,
                         LastEditDate = DateTime.Now,
                         AngerScoreMean = tmpAngerScoreMean,
                         ContemptScoreMean = tmpContemptScoreMean,
@@ -203,7 +203,7 @@ namespace TimelineMe.Common
 
                     };
 
-                    db.MediaGroups.Update(mediaGroup);
+                    db.MediaGroups.Add(mediaGroup);
                     db.SaveChanges();
 
                 }
