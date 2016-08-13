@@ -34,7 +34,7 @@ namespace TimelineMe.Common
 
         public StorageFolder mediaFolder;
         public List<Media> MediaList = new List<Media>();
-
+        public List<MediaGroup> MediaGroupList = new List<MediaGroup>();
 
         private StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         public MediaAdmin()
@@ -45,24 +45,13 @@ namespace TimelineMe.Common
 
         public void Initialize()
         {
-            // Edited: Removed Task
-            //try
-            //{
-            //    mediaFolder = await localFolder.CreateFolderAsync("MediaFolder", CreationCollisionOption.FailIfExists);
-
-            //}
-            //catch (Exception)
-            //{
-
-
-            //}
-
-
             // TODO: Possible bug{Wont refresh}
             using (var db = new MediaContext())
             {
                 MediaList = db.Medias.ToList();
+                MediaGroupList = db.MediaGroups.ToList();
             }
+
         }
         private async Task<AnalysisResult> DoVision(StorageFile file)
         {
@@ -114,18 +103,6 @@ namespace TimelineMe.Common
             MediaList.Remove(toDeleteMedia);
         }
 
-        public async Task<IInputStream> GetThumbnailAsync(MediaGroup mediaGroup)
-        {
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile mediaGroupCMPFile;
-            MediaComposition mediaComposition;
-
-            mediaGroupCMPFile = await localFolder.GetFileAsync(mediaGroup.CompostionFileName + ".cmp");
-            mediaComposition = await MediaComposition.LoadAsync(mediaGroupCMPFile);
-
-            return await mediaComposition.GetThumbnailAsync(
-                TimeSpan.Zero, 0, 0, VideoFramePrecision.NearestFrame);
-        }
 
         public async Task MergeMedias(List<Media> medias, MediaGroup currentMediaGroup = null, double duration = 2)
         {
