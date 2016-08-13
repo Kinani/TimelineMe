@@ -37,6 +37,19 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("MediaCollection");
             }
         }
+        private ObservableCollection<MediaGroup> mediaGroupCollection;
+        public ObservableCollection<MediaGroup> MediaGroupCollection
+        {
+            get
+            {
+                return mediaGroupCollection;
+            }
+            set
+            {
+                mediaGroupCollection = value;
+                RaisePropertyChanged("MediaGroupCollection");
+            }
+        }
 
         private bool isLoading = false;
         public bool IsLoading
@@ -121,6 +134,7 @@ namespace TimelineMe.ViewModels
                 {
                     mediaAdmin.Initialize();
                     MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+                    MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
 
                 });
                 //}
