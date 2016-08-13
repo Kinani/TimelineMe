@@ -101,6 +101,11 @@
     <Compile Include="Converters\HighestEmoToTextConverter.cs" />
     <Compile Include="Converters\MediaNameConverter.cs" />
     <Compile Include="Converters\SelectionChangedConverter.cs" />
+    <Compile Include="Migrations\20160813111455_NewMigration.cs" />
+    <Compile Include="Migrations\20160813111455_NewMigration.designer.cs">
+      <DependentUpon>20160813111455_NewMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\MediaContextModelSnapshot.cs" />
     <Compile Include="Models\Media.cs" />
     <Compile Include="Models\MediaContext.cs" />
     <Compile Include="Models\MediaGroup.cs" />

@@ -257,7 +257,7 @@ namespace TimelineMe.Common
                 timelineCMPOutputFile = await localFolder.GetFileAsync(currentMediaGroup.CompostionFileName + ".cmp");
                 composition = await MediaComposition.LoadAsync(timelineCMPOutputFile);
                 //TODO: make sure this works.
-                for (int i = 0; i <= mediaFiles.Count; i++)
+                for (int i = 0; i < mediaFiles.Count; i++)
                 {
                     mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
                     composition.Clips.Add(mediaClips[i]);
