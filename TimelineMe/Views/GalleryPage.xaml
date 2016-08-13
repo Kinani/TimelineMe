@@ -61,9 +61,11 @@
             </ListView>
         </Grid>
         <Grid x:Name="TimelineGrid" Grid.Row="1">
-            <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollMode="Enabled"
-                      ScrollViewer.VerticalScrollMode="Disabled">
+                      ScrollViewer.VerticalScrollMode="Disabled"
+                      ItemsSource="{Binding MediaGroupCollection}">
                 <ListView.Header>
                     <TextBlock FontSize="20" Height="auto" VerticalAlignment="Top">Timeline Previews:</TextBlock>
                 </ListView.Header>
