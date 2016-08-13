@@ -78,7 +78,7 @@ namespace TimelineMe.Migrations
 
                     b.Property<string>("HighestEmotionMean");
 
-                    b.Property<DateTime>("LastItemDate");
+                    b.Property<DateTime>("LastEditDate");
 
                     b.Property<double>("NeutralScoreMean");
 

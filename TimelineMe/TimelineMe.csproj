@@ -101,15 +101,6 @@
     <Compile Include="Converters\HighestEmoToTextConverter.cs" />
     <Compile Include="Converters\MediaNameConverter.cs" />
     <Compile Include="Converters\SelectionChangedConverter.cs" />
-    <Compile Include="Migrations\20160806120352_MyMigration.cs" />
-    <Compile Include="Migrations\20160806120352_MyMigration.designer.cs">
-      <DependentUpon>20160806120352_MyMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20160806121112_MySecondMigration.cs" />
-    <Compile Include="Migrations\20160806121112_MySecondMigration.designer.cs">
-      <DependentUpon>20160806121112_MySecondMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\MediaContextModelSnapshot.cs" />
     <Compile Include="Models\Media.cs" />
     <Compile Include="Models\MediaContext.cs" />
     <Compile Include="Models\MediaGroup.cs" />

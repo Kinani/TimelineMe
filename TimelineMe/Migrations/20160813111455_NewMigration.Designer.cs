@@ -8,8 +8,8 @@ using TimelineMe.Models;
 namespace TimelineMe.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    [Migration("20160806120352_MyMigration")]
-    partial class MyMigration
+    [Migration("20160813111455_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,6 +65,8 @@ namespace TimelineMe.Migrations
 
                     b.Property<double>("AngerScoreMean");
 
+                    b.Property<string>("CompostionFileName");
+
                     b.Property<double>("ContemptScoreMean");
 
                     b.Property<double>("DisgustScoreMean");
@@ -77,7 +79,7 @@ namespace TimelineMe.Migrations
 
                     b.Property<string>("HighestEmotionMean");
 
-                    b.Property<DateTime>("LastItemDate");
+                    b.Property<DateTime>("LastEditDate");
 
                     b.Property<double>("NeutralScoreMean");
 

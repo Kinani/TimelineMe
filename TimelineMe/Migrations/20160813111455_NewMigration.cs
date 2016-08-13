@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TimelineMe.Migrations
 {
-    public partial class MyMigration : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,13 +43,14 @@ namespace TimelineMe.Migrations
                     MediaGroupId = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
                     AngerScoreMean = table.Column<double>(nullable: false),
+                    CompostionFileName = table.Column<string>(nullable: true),
                     ContemptScoreMean = table.Column<double>(nullable: false),
                     DisgustScoreMean = table.Column<double>(nullable: false),
                     FearScoreMean = table.Column<double>(nullable: false),
                     FirstCreatedDate = table.Column<DateTime>(nullable: false),
                     HappinessScoreMean = table.Column<double>(nullable: false),
                     HighestEmotionMean = table.Column<string>(nullable: true),
-                    LastItemDate = table.Column<DateTime>(nullable: false),
+                    LastEditDate = table.Column<DateTime>(nullable: false),
                     NeutralScoreMean = table.Column<double>(nullable: false),
                     SadnessScoreMean = table.Column<double>(nullable: false),
                     SurpriseScoreMean = table.Column<double>(nullable: false)
