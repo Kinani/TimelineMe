@@ -77,7 +77,7 @@
                         <StackPanel>
                             <Image x:Name="CMPPreviewImage" 
                                    DataContext="{Binding CompostionFileName,
-                                Converter = {StaticResource CompostionFileNameToImageAsyncConverter}}"
+                                   Converter = {StaticResource CompostionFileNameToImageAsyncConverter}}"
                                    Source="{Binding Result}"
                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         </StackPanel>
