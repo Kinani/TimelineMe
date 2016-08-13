@@ -203,8 +203,11 @@ namespace TimelineMe.Common
 
                     };
 
+                    db.MediaGroups.Update(mediaGroup);
+                    db.SaveChanges();
+
                 }
-                
+
                 var action = composition.SaveAsync(timelineCMPOutputFile);
                 action.Completed = (info, status) =>
                 {
