@@ -31,7 +31,10 @@
                     <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
-            <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" Header="Akona Batata" SelectionMode="Multiple">
+            <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" SelectionMode="Multiple">
+                <ListView.Header>
+                    <TextBlock FontSize="20">Captured Images</TextBlock>
+                </ListView.Header>
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="SelectionChanged">
                         <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
@@ -60,13 +63,10 @@
         <Grid x:Name="TimelineGrid" Grid.Row="1">
             <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollMode="Enabled"
-                      ScrollViewer.VerticalScrollMode="Disabled"
-                      >
-                <!--<interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="ItemClick">
-                        <core:InvokeCommandAction Command="{x:Bind Vm.ItemClicked}" CommandParameter="{Binding}"/>
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>-->
+                      ScrollViewer.VerticalScrollMode="Disabled">
+                <ListView.Header>
+                    <TextBlock FontSize="20" Height="auto" VerticalAlignment="Top">Timeline Previews:</TextBlock>
+                </ListView.Header>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Background="Transparent" Orientation="Horizontal"></StackPanel>
