@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using TimelineMe.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
+using Windows.Media.Editing;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,19 +28,37 @@ namespace TimelineMe.Views
     /// </summary>
     public sealed partial class PreviewCompostionPage : Page
     {
+        private MediaStreamSource mediaStreamSource;
+        private MediaComposition mediaComposition;
+        private MediaGroup mediaGroup;
+        private StorageFile cmpFile;
+        
         public PreviewCompostionPage()
         {
             this.InitializeComponent();
+            mediaComposition = new MediaComposition();
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             var currentView = SystemNavigationManager.GetForCurrentView();
 
             currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             currentView.BackRequested += backButton_Tapped;
+            mediaGroup = e.Parameter as MediaGroup;
+            await UpdateMediaElementSource();
         }
+        public async Task UpdateMediaElementSource()
+        {
+            cmpFile = await ApplicationData.Current.LocalFolder.GetFileAsync(mediaGroup.CompostionFileName);
+            mediaComposition = await MediaComposition.LoadAsync(cmpFile);
 
+            mediaStreamSource = mediaComposition.GeneratePreviewMediaStreamSource(
+                (int)mediaElement.ActualWidth,
+                (int)mediaElement.ActualHeight);
+
+            mediaElement.SetMediaStreamSource(mediaStreamSource);
+        }
         private void backButton_Tapped(object sender, BackRequestedEventArgs e)
         {
             if (App.ShellFrame.CanGoBack)

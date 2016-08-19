@@ -113,6 +113,49 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("SelectedMediaForPreview");
             }
         }
+
+        private bool previewEnabled = false;
+
+        public bool PreviewEnabled
+        {
+            get
+            {
+                return previewEnabled;
+            }
+            set
+            {
+                previewEnabled = value;
+                RaisePropertyChanged("PreviewEnabled");
+            }
+        }
+        private Visibility proBarVisibility = Visibility.Collapsed;
+
+        public Visibility ProBarVisibility
+        {
+            get
+            {
+                return proBarVisibility;
+            }
+            set
+            {
+                proBarVisibility = value;
+                RaisePropertyChanged("ProBarVisibility");
+            }
+        }
+        private Visibility contentGridVisibility = Visibility.Visible;
+
+        public Visibility ContentGridVisibility
+        {
+            get
+            {
+                return contentGridVisibility;
+            }
+            set
+            {
+                contentGridVisibility = value;
+                RaisePropertyChanged("ContentGridVisibility");
+            }
+        }
         #endregion
 
         #region Commands
@@ -171,6 +214,10 @@ namespace TimelineMe.ViewModels
                        selectedImages =>
                        {
                            selectedMediaCollection = selectedImages.Cast<Media>().ToList();
+                           if (selectedMediaCollection.Count == 1)
+                               PreviewEnabled = true;
+                           else
+                               PreviewEnabled = false;
                        }));
             }
             set
@@ -264,7 +311,16 @@ namespace TimelineMe.ViewModels
 
         private async Task MergeImages()
         {
+            ContentGridVisibility = Visibility.Collapsed;
+            ProBarVisibility = Visibility.Visible;
+
             await mediaAdmin.MergeMedias(selectedMediaCollection);
+            mediaAdmin.Initialize();
+            MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+            MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
+
+            ContentGridVisibility = Visibility.Visible;
+            ProBarVisibility = Visibility.Collapsed;
         }
 
 

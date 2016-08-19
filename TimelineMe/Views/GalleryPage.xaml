@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding GalleryPageViewModelInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
-    
+
     <Page.Resources>
         <conv:MediaNameConverter x:Key="MediaNameConverter"/>
         <conv:CaptureDateConverter x:Key="CaptureDateConverter"/>
@@ -18,70 +18,72 @@
         <conv:SelectionChangedConverter x:Key="SelectionChangedConverter"/>
         <conv:CompostionFileNameToImageAsyncConverter x:Key="CompostionFileNameToImageAsyncConverter"/>
     </Page.Resources>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!--Paste Here-->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid x:Name="CapturedImagesGrid">
-            <interactivity:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Loaded">
-                    <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
-                </core:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
-            <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" SelectionMode="Multiple">
-                <ListView.Header>
-                    <TextBlock FontSize="20">Captured Images</TextBlock>
-                </ListView.Header>
+    <Grid>
+        <ProgressBar x:Name="myIndeterminateProbar" HorizontalContentAlignment="Stretch" Height="auto" IsIndeterminate="True" Visibility="{Binding ProBarVisibility}"/>
+        <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{Binding ContentGridVisibility}">
+            <!--Paste Here-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="CapturedImagesGrid">
                 <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="SelectionChanged">
-                        <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
-                                                  InputConverter="{StaticResource SelectionChangedConverter}"
-                                                  InputConverterParameter="{Binding ElementName=CapturedImagesListView}"/>
+                    <core:EventTriggerBehavior EventName="Loaded">
+                        <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Padding="3" Orientation="Horizontal">
-                            <Image Width="50" Height="50" Stretch="UniformToFill" Margin="0,0,5,0">
-                                <Image.Source>
-                                    <BitmapImage ImageFailed="BitmapImage_ImageFailed" ImageOpened="BitmapImage_ImageOpened" UriSource="{Binding MediaName,Converter = {StaticResource MediaNameConverter}}"></BitmapImage>
-                                </Image.Source>
-                            </Image>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock  FontSize="15" Text="{Binding CaptureDate}" TextWrapping="WrapWholeWords"></TextBlock>
-                                <TextBlock FontFamily="13" TextWrapping="WrapWholeWords" Text="{Binding HighestEmotion, Converter={StaticResource HighestEmoToTextConverter}}"></TextBlock>
+                <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" SelectionMode="Multiple">
+                    <ListView.Header>
+                        <TextBlock FontSize="20">Captured Images</TextBlock>
+                    </ListView.Header>
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
+                                                  InputConverter="{StaticResource SelectionChangedConverter}"
+                                                  InputConverterParameter="{Binding ElementName=CapturedImagesListView}"/>
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="3" Orientation="Horizontal">
+                                <Image Width="50" Height="50" Stretch="UniformToFill" Margin="0,0,5,0">
+                                    <Image.Source>
+                                        <BitmapImage ImageFailed="BitmapImage_ImageFailed" ImageOpened="BitmapImage_ImageOpened" UriSource="{Binding MediaName,Converter = {StaticResource MediaNameConverter}}"></BitmapImage>
+                                    </Image.Source>
+                                </Image>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock  FontSize="15" Text="{Binding CaptureDate}" TextWrapping="WrapWholeWords"></TextBlock>
+                                    <TextBlock FontFamily="13" TextWrapping="WrapWholeWords" Text="{Binding HighestEmotion, Converter={StaticResource HighestEmoToTextConverter}}"></TextBlock>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                        
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-        <Grid x:Name="TimelineGrid" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock FontSize="20" VerticalAlignment="Top">Timeline Previews:</TextBlock>
-            <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid x:Name="TimelineGrid" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock FontSize="20" VerticalAlignment="Top">Timeline Previews:</TextBlock>
+                <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollMode="Enabled"
                       ScrollViewer.VerticalScrollMode="Disabled"
                       ItemsSource="{Binding MediaGroupCollection}"
                       Grid.Row="1"
                       Margin="0,0,0,10">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Background="Transparent" Orientation="Horizontal"></StackPanel>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <Image x:Name="CMPPreviewImage" 
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Background="Transparent" Orientation="Horizontal"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Image x:Name="CMPPreviewImage" 
                                    DataContext="{Binding CompostionFileName,
                                    Converter = {StaticResource CompostionFileNameToImageAsyncConverter}}"
                                    Source="{Binding Result}"
@@ -89,20 +91,21 @@
                                    Stretch="Uniform"
                                    Height="100"
                                    Width="70"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
+                <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}"/>
+                <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnabled}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.MediaClikcedForPreview}"/>
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </AppBarButton>
+            </CommandBar>
         </Grid>
-        <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
-            <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}"/>
-            <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="True">
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="Click">
-                        <core:InvokeCommandAction Command="{x:Bind Vm.MediaClikcedForPreview}"/>
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
-            </AppBarButton>
-        </CommandBar>
     </Grid>
 </Page>
