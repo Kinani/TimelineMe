@@ -44,5 +44,10 @@ namespace TimelineMe.Views
         {
             this.InitializeComponent();
         }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            App.ShellFrame = Frame;
+        }
     }
 }

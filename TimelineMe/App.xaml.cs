@@ -23,6 +23,7 @@ namespace TimelineMe
 {   
     sealed partial class App : Application
     {
+        public static Frame ShellFrame;
         
         public App()
         {

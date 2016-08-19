@@ -133,6 +133,9 @@
     <Compile Include="Views\PreviewCompostionPage.xaml.cs">
       <DependentUpon>PreviewCompostionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PreviewMediaPage.xaml.cs">
+      <DependentUpon>PreviewMediaPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PreviewCompostionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreviewMediaPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

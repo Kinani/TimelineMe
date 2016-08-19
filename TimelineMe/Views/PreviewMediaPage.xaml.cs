@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TimelineMe.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
@@ -21,9 +22,9 @@ namespace TimelineMe.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class PreviewCompostionPage : Page
+    public sealed partial class PreviewMediaPage : Page
     {
-        public PreviewCompostionPage()
+        public PreviewMediaPage()
         {
             this.InitializeComponent();
         }
@@ -34,6 +35,7 @@ namespace TimelineMe.Views
 
             currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             currentView.BackRequested += backButton_Tapped;
+            BitMapImage.UriSource = new Uri(string.Format("ms-appdata:///local/{0}", (e.Parameter as Media).MediaName));
         }
 
         private void backButton_Tapped(object sender, BackRequestedEventArgs e)
@@ -41,7 +43,7 @@ namespace TimelineMe.Views
             if (App.ShellFrame.CanGoBack)
                 App.ShellFrame.GoBack();
             else
-                App.ShellFrame.Navigate(typeof(HomePage));
+                App.ShellFrame.Navigate(typeof(Shell));
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

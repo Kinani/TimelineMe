@@ -12,8 +12,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TimelineMe.Common;
 using TimelineMe.Models;
+using TimelineMe.Views;
 using Windows.Media.Capture;
 using Windows.Storage;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace TimelineMe.ViewModels
@@ -97,6 +100,19 @@ namespace TimelineMe.ViewModels
             }
         }
 
+        private Media selectedMediaForPreview;
+        public Media SelectedMediaForPreview
+        {
+            get
+            {
+                return selectedMediaForPreview;
+            }
+            set
+            {
+                selectedMediaForPreview = value;
+                RaisePropertyChanged("SelectedMediaForPreview");
+            }
+        }
         #endregion
 
         #region Commands
@@ -178,6 +194,36 @@ namespace TimelineMe.ViewModels
                 mergeSelectedImages = value;
             }
         }
+        private RelayCommand mediaClikcedForPreview;
+        public RelayCommand MediaClikcedForPreview
+        {
+            get
+            {
+
+                mediaClikcedForPreview = new RelayCommand(async
+                   () =>
+                   {
+                       Media mediaToPreview = null;
+                       if (selectedMediaCollection.Count == 1)
+                       {
+                           mediaToPreview = selectedMediaCollection[0];
+                       }
+                       await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
+                       .RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            App.ShellFrame.Navigate(typeof(PreviewMediaPage), mediaToPreview);
+                            
+                        });
+
+                   });
+                return mediaClikcedForPreview;
+            }
+            set
+            {
+                mediaClikcedForPreview = value;
+            }
+        }
+
 
 
         #endregion
