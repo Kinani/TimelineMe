@@ -25,6 +25,7 @@ namespace TimelineMe.ViewModels
     {
         private MediaAdmin mediaAdmin;
         private List<Media> selectedMediaCollection;
+        private List<MediaGroup> selectedCMPCollection;
         #region Properties    
 
         private ObservableCollection<Media> mediaCollection;
@@ -114,18 +115,33 @@ namespace TimelineMe.ViewModels
             }
         }
 
-        private bool previewEnabled = false;
+        private bool previewEnable = false;
 
-        public bool PreviewEnabled
+        public bool PreviewEnable
         {
             get
             {
-                return previewEnabled;
+                return previewEnable;
             }
             set
             {
-                previewEnabled = value;
-                RaisePropertyChanged("PreviewEnabled");
+                previewEnable = value;
+                RaisePropertyChanged("PreviewEnable");
+            }
+        }
+
+        private bool cmpPreview = false;
+
+        public bool CMPPreview
+        {
+            get
+            {
+                return cmpPreview;
+            }
+            set
+            {
+                cmpPreview = value;
+                RaisePropertyChanged("CMPPreview");
             }
         }
         private Visibility proBarVisibility = Visibility.Collapsed;
@@ -215,14 +231,35 @@ namespace TimelineMe.ViewModels
                        {
                            selectedMediaCollection = selectedImages.Cast<Media>().ToList();
                            if (selectedMediaCollection.Count == 1)
-                               PreviewEnabled = true;
+                               PreviewEnable = true;
                            else
-                               PreviewEnabled = false;
+                               PreviewEnable = false;
                        }));
             }
             set
             {
                 updateSelectedImages = value;
+            }
+        }
+        private RelayCommand<IList<object>> updateSelectedCMP;
+        public RelayCommand<IList<object>> UpdateSelectedCMP
+        {
+            get
+            {
+                return updateSelectedCMP
+                   ?? (updateSelectedCMP = new RelayCommand<IList<object>>(
+                       selectedCMP =>
+                       {
+                           selectedCMPCollection = selectedCMP.Cast<MediaGroup>().ToList();
+                           if (selectedCMPCollection.Count == 1)
+                               CMPPreview = true;
+                           else
+                               CMPPreview = false;
+                       }));
+            }
+            set
+            {
+                updateSelectedCMP = value;
             }
         }
         private RelayCommand mergeSelectedImages;
@@ -259,7 +296,7 @@ namespace TimelineMe.ViewModels
                        .RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                         {
                             App.ShellFrame.Navigate(typeof(PreviewMediaPage), mediaToPreview);
-                            
+
                         });
 
                    });
@@ -271,7 +308,35 @@ namespace TimelineMe.ViewModels
             }
         }
 
+        private RelayCommand cmpClikcedForPreview;
+        public RelayCommand CMPClikcedForPreview
+        {
+            get
+            {
 
+                cmpClikcedForPreview = new RelayCommand(async
+                   () =>
+                {
+                    MediaGroup mediaGroupToPreview = null;
+                    if (selectedCMPCollection.Count == 1)
+                    {
+                        mediaGroupToPreview = selectedCMPCollection[0];
+                    }
+                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
+                    .RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        App.ShellFrame.Navigate(typeof(PreviewCompostionPage), mediaGroupToPreview);
+
+                    });
+
+                });
+                return cmpClikcedForPreview;
+            }
+            set
+            {
+                cmpClikcedForPreview = value;
+            }
+        }
 
         #endregion
         public GalleryPageViewModel()

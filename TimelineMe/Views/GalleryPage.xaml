@@ -75,6 +75,13 @@
                       ItemsSource="{Binding MediaGroupCollection}"
                       Grid.Row="1"
                       Margin="0,0,0,10">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="SelectionChanged">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedCMP}"
+                                                  InputConverter="{StaticResource SelectionChangedConverter}"
+                                                  InputConverterParameter="{Binding ElementName=TimelineListView}"/>
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Background="Transparent" Orientation="Horizontal"></StackPanel>
@@ -98,10 +105,17 @@
             </Grid>
             <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
                 <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}"/>
-                <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnabled}">
+                <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="Click">
                             <core:InvokeCommandAction Command="{x:Bind Vm.MediaClikcedForPreview}"/>
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </AppBarButton>
+                <AppBarButton x:Name="PreviewCMPAppBrBtn" Icon="View" Label="Preview Timeline" IsEnabled="{Binding CMPPreview}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.CMPClikcedForPreview}"/>
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
                 </AppBarButton>

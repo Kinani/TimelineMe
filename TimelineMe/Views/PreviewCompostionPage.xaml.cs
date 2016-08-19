@@ -32,7 +32,7 @@ namespace TimelineMe.Views
         private MediaComposition mediaComposition;
         private MediaGroup mediaGroup;
         private StorageFile cmpFile;
-        
+
         public PreviewCompostionPage()
         {
             this.InitializeComponent();
@@ -50,7 +50,7 @@ namespace TimelineMe.Views
         }
         public async Task UpdateMediaElementSource()
         {
-            cmpFile = await ApplicationData.Current.LocalFolder.GetFileAsync(mediaGroup.CompostionFileName);
+            cmpFile = await ApplicationData.Current.LocalFolder.GetFileAsync(mediaGroup.CompostionFileName + ".cmp");
             mediaComposition = await MediaComposition.LoadAsync(cmpFile);
 
             mediaStreamSource = mediaComposition.GeneratePreviewMediaStreamSource(
