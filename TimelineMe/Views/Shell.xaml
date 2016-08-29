@@ -25,15 +25,21 @@
            Style="{StaticResource NavigationButtonStyle}"
            Tag="&#xE76E;"
            Checked="Option1Button_Checked"
-           Content="Option 1"
+           Content="Capture new image"
            />
                         <RadioButton x:Name="Option2"
            GroupName="Group1"
            Style="{StaticResource NavigationButtonStyle}"
            Tag="&#xE76E;"
            Checked="Option2Button_Checked"
-           Content="Option 2"
+           Content="Gallery"
            />
+                        <RadioButton x:Name="Option3"
+                                     GroupName="Group1"
+                                     Style="{StaticResource NavigationButtonStyle}"
+                                     Tag="&#xE76E;"
+                                     Checked="Option3_Checked"
+                                     Content="Analytics"/>
                     </StackPanel>
 
                 </Grid>
@@ -55,5 +61,5 @@
             </SplitView.Content>
         </SplitView>
     </Grid>
-    
+
 </Page>

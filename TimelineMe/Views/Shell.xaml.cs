@@ -49,5 +49,11 @@ namespace TimelineMe.Views
             base.OnNavigatedTo(e);
             App.ShellFrame = Frame;
         }
+
+        private void Option3_Checked(object sender, RoutedEventArgs e)
+        {
+            Content.Navigate(typeof(AnalyticsPage));
+            NavigationPane.IsPaneOpen = false;
+        }
     }
 }

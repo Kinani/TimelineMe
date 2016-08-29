@@ -1,22 +1,91 @@
-﻿<Page
+﻿<Page 
+     
     x:Class="TimelineMe.Views.AnalyticsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:TimelineMe.Views"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:my="using:Syncfusion.UI.Xaml.Charts"
+    xmlns:conv="using:TimelineMe.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding AnalyticsPageViewModelInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <conv:SelectionChangedConverter x:Key="SelectionChangedConverter"/>
+        <conv:CompostionFileNameToImageAsyncConverter x:Key="CompostionFileNameToImageAsyncConverter"/>
+    </Page.Resources>
     <Grid x:Name="rootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <interactivity:Interaction.Behaviors>
             <core:EventTriggerBehavior EventName="Loaded">
                 <core:InvokeCommandAction Command="{x:Bind Vm.AnalyticsPageLoaded}"/>
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
-        
-        
+
+        <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollMode="Enabled"
+                      ScrollViewer.VerticalScrollMode="Disabled"
+                      ItemsSource="{Binding MediaGroupCollection}"
+                      Grid.Row="0"
+                      Margin="0,0,0,10"
+                      SelectionMode="Single"
+                      >
+            <ListView.Header>
+                <TextBlock FontSize="20">Please select a TimelineMe output to plot the chart.</TextBlock>
+            </ListView.Header>
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="SelectionChanged">
+                    <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedCMP}"
+                                                  InputConverter="{StaticResource SelectionChangedConverter}"
+                                                  InputConverterParameter="{Binding ElementName=TimelineListView}"/>
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="Transparent" Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Image x:Name="CMPPreviewImage" 
+                                   DataContext="{Binding CompostionFileName,
+                                   Converter = {StaticResource CompostionFileNameToImageAsyncConverter}}"
+                                   Source="{Binding Result}"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                   Stretch="Uniform"
+                                   Height="100"
+                                   Width="70"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <my:SfChart Header="Emotions Chart" Grid.Row="1">
+            <my:SfChart.PrimaryAxis>
+                <my:CategoryAxis Header="Emotions" FontSize="12"/>
+            </my:SfChart.PrimaryAxis>
+            <my:SfChart.SecondaryAxis>
+                <my:NumericalAxis Header="Scores" FontSize="12"/>
+            </my:SfChart.SecondaryAxis>
+            <my:SfChart.Legend>
+                <my:ChartLegend Visibility="Visible"/>
+            </my:SfChart.Legend>
+
+            <my:ColumnSeries x:Name="AngerSer" Label="Anger" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="AngerScoreMean" YBindingPath="AngerScoreMean"/>
+            <my:ColumnSeries x:Name="ConSer" Label="Contempt" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="ContemptScoreMean" YBindingPath="ContemptScoreMean"/>
+            <my:ColumnSeries x:Name="DisSer" Label="Disgust" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="DisgustScoreMean" YBindingPath="DisgustScoreMean"/>
+            <my:ColumnSeries x:Name="FearSer" Label="Fear" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="FearScoreMean" YBindingPath="FearScoreMean"/>
+            <my:ColumnSeries x:Name="HappSer" Label="Happiness" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="HappinessScoreMean" YBindingPath="HappinessScoreMean"/>
+            <my:ColumnSeries x:Name="NeuSer" Label="Neutral" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="NeutralScoreMean" YBindingPath="NeutralScoreMean"/>
+            <my:ColumnSeries x:Name="SadSer" Label="Sadness" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="SadnessScoreMean" YBindingPath="SadnessScoreMean"/>
+            <my:ColumnSeries x:Name="SurSer" Label="Surprise" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="SurpriseScoreMean" YBindingPath="SurpriseScoreMean"/>
+        </my:SfChart>
+
     </Grid>
 </Page>

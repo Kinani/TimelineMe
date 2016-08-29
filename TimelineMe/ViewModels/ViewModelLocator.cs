@@ -30,7 +30,7 @@ namespace TimelineMe.ViewModels
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<CapturePageViewModel>();
             SimpleIoc.Default.Register<GalleryPageViewModel>();
-            SimpleIoc.Default.IsRegistered<AnalyticsPageViewModel>();
+            SimpleIoc.Default.Register<AnalyticsPageViewModel>();
 
         }
 

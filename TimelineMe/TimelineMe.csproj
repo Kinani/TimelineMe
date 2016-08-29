@@ -110,6 +110,7 @@
     <Compile Include="Models\MediaContext.cs" />
     <Compile Include="Models\MediaGroup.cs" />
     <Compile Include="MyCredentials.cs" />
+    <Compile Include="ViewModels\AnalyticsPageViewModel.cs" />
     <Compile Include="ViewModels\CapturePageViewModel.cs" />
     <Compile Include="ViewModels\GalleryPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />

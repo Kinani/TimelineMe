@@ -17,6 +17,19 @@ namespace TimelineMe.ViewModels
 
         #region Properties
 
+        private ObservableCollection<MediaGroup> selectedMediaGroup;
+        public ObservableCollection<MediaGroup> SelectedMediaGroup
+        {
+            get
+            {
+                return selectedMediaGroup;
+            }
+            set
+            {
+                selectedMediaGroup = value;
+                RaisePropertyChanged("SelectedMediaGroup");
+            }
+        }
         private ObservableCollection<Media> mediaCollection;
         public ObservableCollection<Media> MediaCollection
         {
@@ -47,6 +60,26 @@ namespace TimelineMe.ViewModels
 
         #region Commands
 
+        private RelayCommand<IList<object>> updateSelectedCMP;
+        public RelayCommand<IList<object>> UpdateSelectedCMP
+        {
+            get
+            {
+                
+                   updateSelectedCMP = new RelayCommand<IList<object>>(
+                       selectedCMP =>
+                       {
+                           SelectedMediaGroup = new ObservableCollection<MediaGroup>(selectedCMP.Cast<MediaGroup>().ToList());
+                       });
+                return updateSelectedCMP;
+            }
+            set
+            {
+                updateSelectedCMP = value;
+            }
+        }
+
+
         private RelayCommand analyticsPageLoaded;
 
 
@@ -71,6 +104,10 @@ namespace TimelineMe.ViewModels
             }
         }
         #endregion
-        public AnalyticsPageViewModel() { }
+        public AnalyticsPageViewModel()
+        {
+            mediaAdmin = new MediaAdmin();
+            SelectedMediaGroup = new ObservableCollection<MediaGroup>();
+        }
     }
 }
