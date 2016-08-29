@@ -30,6 +30,7 @@ namespace TimelineMe.ViewModels
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<CapturePageViewModel>();
             SimpleIoc.Default.Register<GalleryPageViewModel>();
+            SimpleIoc.Default.IsRegistered<AnalyticsPageViewModel>();
 
         }
 
@@ -48,6 +49,14 @@ namespace TimelineMe.ViewModels
             get
             {
                 return ServiceLocator.Current.GetInstance<GalleryPageViewModel>();
+            }
+        }
+
+        public AnalyticsPageViewModel AnalyticsPageViewModelInstance
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AnalyticsPageViewModel>();
             }
         }
         public static void Cleanup()
