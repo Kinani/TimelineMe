@@ -19,6 +19,7 @@
     <Grid x:Name="rootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <interactivity:Interaction.Behaviors>
@@ -26,19 +27,16 @@
                 <core:InvokeCommandAction Command="{x:Bind Vm.AnalyticsPageLoaded}"/>
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
-
+        <TextBlock FontSize="20" Margin="0,5,0,0">Please select a TimelineMe output to plot the chart.</TextBlock>
         <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollMode="Enabled"
                       ScrollViewer.VerticalScrollMode="Disabled"
                       ItemsSource="{Binding MediaGroupCollection}"
-                      Grid.Row="0"
+                      Grid.Row="1"
                       Margin="0,0,0,10"
                       SelectionMode="Single"
                       >
-            <ListView.Header>
-                <TextBlock FontSize="20">Please select a TimelineMe output to plot the chart.</TextBlock>
-            </ListView.Header>
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="SelectionChanged">
                     <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedCMP}"
@@ -66,7 +64,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <my:SfChart Header="Emotions Chart" Grid.Row="1">
+        <my:SfChart Header="Emotions Chart" Grid.Row="2">
             <my:SfChart.PrimaryAxis>
                 <my:CategoryAxis Header="Emotions" FontSize="12"/>
             </my:SfChart.PrimaryAxis>
