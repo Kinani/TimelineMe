@@ -19,10 +19,10 @@
         <conv:CompostionFileNameToImageAsyncConverter x:Key="CompostionFileNameToImageAsyncConverter"/>
         <conv:ASPArgsConverter x:Key="ASPArgsConverter"/>
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="rootGrid">
+        <!--TODO:: Hide content Add ASP results with the required funcs-->
         <ProgressBar x:Name="myIndeterminateProbar" HorizontalContentAlignment="Stretch" Height="auto" IsIndeterminate="True" Visibility="{Binding ProBarVisibility}"/>
         <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{Binding ContentGridVisibility}">
-            <!--Paste Here-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="2*"/>
@@ -34,7 +34,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock FontSize="20">Captured Images</TextBlock>
+                <TextBlock FontSize="20" Text="{Binding TextBlockHeader}"/>
                 <AutoSuggestBox x:Name="asb" Grid.Column="1" MinWidth="296"  HorizontalAlignment="Right" 
                         PlaceholderText="Search by tags or Emotions"
                         QueryIcon="Find">
@@ -45,9 +45,6 @@
                                                       />
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
-
-
-
                 </AutoSuggestBox>
             </Grid>
             <Grid x:Name="CapturedImagesGrid" Grid.Row="1">
@@ -60,7 +57,7 @@
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="SelectionChanged">
                             <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
-                                                  InputConverter="{StaticResource ASPArgsConverter}"
+                                                  InputConverter="{StaticResource SelectionChangedConverter}"
                                                   InputConverterParameter="{Binding ElementName=CapturedImagesListView}"/>
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>

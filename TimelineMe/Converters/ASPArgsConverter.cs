@@ -13,9 +13,18 @@ namespace TimelineMe.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             
-            var args = (AutoSuggestBoxQuerySubmittedEventArgs)value;
+            var args = value as AutoSuggestBoxQuerySubmittedEventArgs;
             
             return args;
+
+            //if (value != null)
+            //{
+            //    var args = (AutoSuggestBoxQuerySubmittedEventArgs)value;
+
+            //    return args;
+            //}
+            //else
+            //    return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

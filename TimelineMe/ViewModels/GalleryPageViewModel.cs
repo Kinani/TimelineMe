@@ -1,6 +1,6 @@
 ﻿//    TODO: 
-//    New model for merged videos?? or should we integrate the shit out of it
-//    to the current only Model. + then we need to Imp. commands required for TimelineGrid
+//    Take a look into MergeMedias() tyy.
+
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -40,6 +40,19 @@ namespace TimelineMe.ViewModels
             {
                 mediaCollection = value;
                 RaisePropertyChanged("MediaCollection");
+            }
+        }
+        private ObservableCollection<Media> aspMediaCollectionResult;
+        public ObservableCollection<Media> ASPMediaCollectionResult
+        {
+            get
+            {
+                return aspMediaCollectionResult;
+            }
+            set
+            {
+                aspMediaCollectionResult = value;
+                RaisePropertyChanged("ASPMediaCollectionResult");
             }
         }
         private ObservableCollection<MediaGroup> mediaGroupCollection;
@@ -187,6 +200,19 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("ContentGridVisibility");
             }
         }
+
+        private string textBlockHeader = "Captured Images";
+
+        public string TextBlockHeader
+        {
+            get { return textBlockHeader; }
+            set
+            {
+                textBlockHeader = value;
+                RaisePropertyChanged("TextBlockHeader");
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -198,7 +224,15 @@ namespace TimelineMe.ViewModels
             {   
                     asbQuerySubmitted = new RelayCommand<object>(asbArgs =>
                     {
-                        
+                        var args = asbArgs as AutoSuggestBoxQuerySubmittedEventArgs;
+                        if(GetMatchingMedias(args.QueryText))
+                        {
+                            
+                        }
+                        else
+                        {
+
+                        }
                     });
                 
                 return asbQuerySubmitted;
@@ -223,6 +257,7 @@ namespace TimelineMe.ViewModels
                     mediaAdmin.Initialize();
                     MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
                     MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
+                    ASPMediaCollectionResult = new ObservableCollection<Media>();
                     MediaSelectedON = false;
                     MediaGroupSelectedON = false;
 
@@ -392,6 +427,35 @@ namespace TimelineMe.ViewModels
             mediaAdmin = new MediaAdmin();
 
         }
+
+        private bool GetMatchingMedias(string userQuery)
+        {
+            // TODO
+            // Improve eff. like how much of the query keyowrds found in each result. but screw it for now.
+            string query = userQuery.ToLower();
+            bool mediaPass = false;
+            bool foundResult = false;
+
+            foreach (var media in MediaCollection)
+            {
+                string[] currentMediaTags = media.TagsSpacesSeperated.Split(
+                    new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var tag in currentMediaTags)
+                {
+                    if (query.Contains(tag))
+                        mediaPass = true;
+                }
+                if (mediaPass == true)
+                {
+                    ASPMediaCollectionResult.Add(media);
+                    foundResult = true;
+                }
+
+                mediaPass = false; 
+            }
+            return foundResult;
+        }
+
         public async Task OpenCameraUI()
         {
             CameraCaptureUI captureUI = new CameraCaptureUI();
