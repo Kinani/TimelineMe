@@ -17,30 +17,50 @@
         <conv:HighestEmoToTextConverter x:Key="HighestEmoToTextConverter"/>
         <conv:SelectionChangedConverter x:Key="SelectionChangedConverter"/>
         <conv:CompostionFileNameToImageAsyncConverter x:Key="CompostionFileNameToImageAsyncConverter"/>
+        <conv:ASPArgsConverter x:Key="ASPArgsConverter"/>
     </Page.Resources>
     <Grid>
         <ProgressBar x:Name="myIndeterminateProbar" HorizontalContentAlignment="Stretch" Height="auto" IsIndeterminate="True" Visibility="{Binding ProBarVisibility}"/>
         <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{Binding ContentGridVisibility}">
             <!--Paste Here-->
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="CapturedImagesGrid">
+            <Grid x:Name="HeaderGrid" Grid.Row="0" Margin="0,3,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="20">Captured Images</TextBlock>
+                <AutoSuggestBox x:Name="asb" Grid.Column="1" MinWidth="296"  HorizontalAlignment="Right" 
+                        PlaceholderText="Search by tags or Emotions"
+                        QueryIcon="Find">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="QuerySubmitted">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.ASBQuerySubmitted}"
+                                                      InputConverter="{StaticResource ASPArgsConverter}"
+                                                      />
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+
+
+
+                </AutoSuggestBox>
+            </Grid>
+            <Grid x:Name="CapturedImagesGrid" Grid.Row="1">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Loaded">
                         <core:InvokeCommandAction Command="{x:Bind Vm.GalleryPageLoaded}"/>
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
                 <ListView x:Name="CapturedImagesListView" ItemsSource="{Binding MediaCollection}" SelectionMode="Multiple">
-                    <ListView.Header>
-                        <TextBlock FontSize="20">Captured Images</TextBlock>
-                    </ListView.Header>
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="SelectionChanged">
                             <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
-                                                  InputConverter="{StaticResource SelectionChangedConverter}"
+                                                  InputConverter="{StaticResource ASPArgsConverter}"
                                                   InputConverterParameter="{Binding ElementName=CapturedImagesListView}"/>
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
@@ -62,7 +82,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
-            <Grid x:Name="TimelineGrid" Grid.Row="1">
+            <Grid x:Name="TimelineGrid" Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>

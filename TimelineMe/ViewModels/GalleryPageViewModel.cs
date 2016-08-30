@@ -190,24 +190,22 @@ namespace TimelineMe.ViewModels
         #endregion
 
         #region Commands
-        private RelayCommand openCamera;
+        private RelayCommand<object> asbQuerySubmitted;
 
-        public RelayCommand OpenCamera
+        public RelayCommand<object> ASBQuerySubmitted
         {
             get
-            {
-                if (openCamera == null)
-                {
-                    openCamera = new RelayCommand(async () =>
+            {   
+                    asbQuerySubmitted = new RelayCommand<object>(asbArgs =>
                     {
-                        await OpenCameraUI();
+                        
                     });
-                }
-                return openCamera;
+                
+                return asbQuerySubmitted;
             }
             set
             {
-                openCamera = value;
+                asbQuerySubmitted = value;
             }
         }
 
