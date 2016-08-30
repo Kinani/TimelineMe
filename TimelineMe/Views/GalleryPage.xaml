@@ -104,7 +104,7 @@
                 </ListView>
             </Grid>
             <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
-                <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}"/>
+                <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}" IsEnabled="{Binding MergeEnable}"/>
                 <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="Click">

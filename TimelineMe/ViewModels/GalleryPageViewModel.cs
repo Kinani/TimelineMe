@@ -26,6 +26,7 @@ namespace TimelineMe.ViewModels
         private MediaAdmin mediaAdmin;
         private List<Media> selectedMediaCollection;
         private List<MediaGroup> selectedCMPCollection;
+        private bool MediaSelectedON, MediaGroupSelectedON = false;
         #region Properties    
 
         private ObservableCollection<Media> mediaCollection;
@@ -129,6 +130,20 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("PreviewEnable");
             }
         }
+        private bool mergeEnable;
+
+        public bool MergeEnable
+        {
+            get
+            {
+                return mergeEnable;
+            }
+            set
+            {
+                mergeEnable = value;
+                RaisePropertyChanged("MergeEnable");
+            }
+        }
 
         private bool cmpPreview = false;
 
@@ -210,6 +225,8 @@ namespace TimelineMe.ViewModels
                     mediaAdmin.Initialize();
                     MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
                     MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
+                    MediaSelectedON = false;
+                    MediaGroupSelectedON = false;
 
                 });
                 //}
@@ -225,16 +242,35 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                return updateSelectedImages
-                   ?? (updateSelectedImages = new RelayCommand<IList<object>>(
+                
+                   updateSelectedImages = new RelayCommand<IList<object>>(
                        selectedImages =>
                        {
                            selectedMediaCollection = selectedImages.Cast<Media>().ToList();
                            if (selectedMediaCollection.Count == 1)
+                           {
                                PreviewEnable = true;
+
+                           }
                            else
+                           {
                                PreviewEnable = false;
-                       }));
+                               MergeEnable = true;
+                           }
+                           // TODO
+                           if (selectedMediaCollection.Count >= 1)
+                           {
+                               MediaSelectedON = true;
+                               if (MediaGroupSelectedON)
+                                   MergeEnable = true;
+                           }
+                           else
+                           {
+                               MediaSelectedON = false;
+                               MergeEnable = false;
+                           }
+                       });
+                return updateSelectedImages;
             }
             set
             {
@@ -246,16 +282,30 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                return updateSelectedCMP
-                   ?? (updateSelectedCMP = new RelayCommand<IList<object>>(
+                
+                   updateSelectedCMP = new RelayCommand<IList<object>>(
                        selectedCMP =>
                        {
                            selectedCMPCollection = selectedCMP.Cast<MediaGroup>().ToList();
                            if (selectedCMPCollection.Count == 1)
+                           {
                                CMPPreview = true;
+
+                               MediaGroupSelectedON = true;
+                               if (MediaSelectedON)
+                                   MergeEnable = true;
+                           }
                            else
+                           {
                                CMPPreview = false;
-                       }));
+
+                               MediaGroupSelectedON = false;
+                               if (!MediaSelectedON)
+                                   MergeEnable = false;
+                           }
+                          
+                       });
+                return updateSelectedCMP;
             }
             set
             {
