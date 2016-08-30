@@ -15,6 +15,7 @@ using TimelineMe.Models;
 using TimelineMe.Views;
 using Windows.Media.Capture;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -69,17 +70,17 @@ namespace TimelineMe.ViewModels
             }
         }
 
-        private bool isLoading = false;
-        public bool IsLoading
+        private bool isSearching = false;
+        public bool IsSearching
         {
             get
             {
-                return isLoading;
+                return isSearching;
             }
             set
             {
-                isLoading = value;
-                RaisePropertyChanged("IsLoading");
+                isSearching = value;
+                RaisePropertyChanged("IsSearching");
 
             }
 
@@ -200,7 +201,19 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("ContentGridVisibility");
             }
         }
-
+        private Visibility searchResultGridVisibility = Visibility.Collapsed;
+        public Visibility SearchResultGridVisibility
+        {
+            get
+            {
+                return searchResultGridVisibility;
+            }
+            set
+            {
+                searchResultGridVisibility = value;
+                RaisePropertyChanged("SearchResultGridVisibility");
+            }
+        }
         private string textBlockHeader = "Captured Images";
 
         public string TextBlockHeader
@@ -221,20 +234,32 @@ namespace TimelineMe.ViewModels
         public RelayCommand<object> ASBQuerySubmitted
         {
             get
-            {   
-                    asbQuerySubmitted = new RelayCommand<object>(asbArgs =>
+            {
+                asbQuerySubmitted = new RelayCommand<object>(async asbArgs =>
+                {
+                    var args = asbArgs as AutoSuggestBoxQuerySubmittedEventArgs;
+                    ContentGridVisibility = Visibility.Collapsed;
+                    ProBarVisibility = Visibility.Visible;
+                    if (GetMatchingMedias(args.QueryText))
                     {
-                        var args = asbArgs as AutoSuggestBoxQuerySubmittedEventArgs;
-                        if(GetMatchingMedias(args.QueryText))
-                        {
-                            
-                        }
-                        else
-                        {
+                        SearchResultGridVisibility = Visibility.Visible;
+                        ProBarVisibility = Visibility.Collapsed;
+                        TextBlockHeader = "Search results:";
+                    }
+                    else
+                    {
+                        ProBarVisibility = Visibility.Collapsed;
+                        ContentGridVisibility = Visibility.Visible;
+                        await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
+                             .RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                                 {
+                                     var dialog = new MessageDialog("No results found:(");
+                                     dialog.Commands.Add(new UICommand("K") { Id = 0 });
+                                     await dialog.ShowAsync();
+                                 });
+                    }
+                });
 
-                        }
-                    });
-                
                 return asbQuerySubmitted;
             }
             set
@@ -250,19 +275,21 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                //if (galleryPageLoaded == null)
-                //{
+
                 galleryPageLoaded = new RelayCommand(() =>
                 {
                     mediaAdmin.Initialize();
+                    ASPMediaCollectionResult = new ObservableCollection<Media>();
                     MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
                     MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
-                    ASPMediaCollectionResult = new ObservableCollection<Media>();
                     MediaSelectedON = false;
                     MediaGroupSelectedON = false;
+                    TextBlockHeader = "Images captured:";
+                    SearchResultGridVisibility = Visibility.Collapsed;
+                    ContentGridVisibility = Visibility.Visible;
 
                 });
-                //}
+
                 return galleryPageLoaded;
             }
             set
@@ -275,34 +302,34 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                
-                   updateSelectedImages = new RelayCommand<IList<object>>(
-                       selectedImages =>
-                       {
-                           selectedMediaCollection = selectedImages.Cast<Media>().ToList();
-                           if (selectedMediaCollection.Count == 1)
-                           {
-                               PreviewEnable = true;
 
-                           }
-                           else
-                           {
-                               PreviewEnable = false;
-                               MergeEnable = true;
-                           }
+                updateSelectedImages = new RelayCommand<IList<object>>(
+                    selectedImages =>
+                    {
+                        selectedMediaCollection = selectedImages.Cast<Media>().ToList();
+                        if (selectedMediaCollection.Count == 1)
+                        {
+                            PreviewEnable = true;
+
+                        }
+                        else
+                        {
+                            PreviewEnable = false;
+                            MergeEnable = true;
+                        }
                            // TODO
                            if (selectedMediaCollection.Count >= 1)
-                           {
-                               MediaSelectedON = true;
-                               if (MediaGroupSelectedON)
-                                   MergeEnable = true;
-                           }
-                           else
-                           {
-                               MediaSelectedON = false;
-                               MergeEnable = false;
-                           }
-                       });
+                        {
+                            MediaSelectedON = true;
+                            if (MediaGroupSelectedON)
+                                MergeEnable = true;
+                        }
+                        else
+                        {
+                            MediaSelectedON = false;
+                            MergeEnable = false;
+                        }
+                    });
                 return updateSelectedImages;
             }
             set
@@ -315,29 +342,29 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                
-                   updateSelectedCMP = new RelayCommand<IList<object>>(
-                       selectedCMP =>
-                       {
-                           selectedCMPCollection = selectedCMP.Cast<MediaGroup>().ToList();
-                           if (selectedCMPCollection.Count == 1)
-                           {
-                               CMPPreview = true;
 
-                               MediaGroupSelectedON = true;
-                               if (MediaSelectedON)
-                                   MergeEnable = true;
-                           }
-                           else
-                           {
-                               CMPPreview = false;
+                updateSelectedCMP = new RelayCommand<IList<object>>(
+                    selectedCMP =>
+                    {
+                        selectedCMPCollection = selectedCMP.Cast<MediaGroup>().ToList();
+                        if (selectedCMPCollection.Count == 1)
+                        {
+                            CMPPreview = true;
 
-                               MediaGroupSelectedON = false;
-                               if (!MediaSelectedON)
-                                   MergeEnable = false;
-                           }
-                          
-                       });
+                            MediaGroupSelectedON = true;
+                            if (MediaSelectedON)
+                                MergeEnable = true;
+                        }
+                        else
+                        {
+                            CMPPreview = false;
+
+                            MediaGroupSelectedON = false;
+                            if (!MediaSelectedON)
+                                MergeEnable = false;
+                        }
+
+                    });
                 return updateSelectedCMP;
             }
             set
@@ -435,7 +462,7 @@ namespace TimelineMe.ViewModels
             string query = userQuery.ToLower();
             bool mediaPass = false;
             bool foundResult = false;
-
+            ASPMediaCollectionResult.Clear();
             foreach (var media in MediaCollection)
             {
                 string[] currentMediaTags = media.TagsSpacesSeperated.Split(
@@ -451,7 +478,7 @@ namespace TimelineMe.ViewModels
                     foundResult = true;
                 }
 
-                mediaPass = false; 
+                mediaPass = false;
             }
             return foundResult;
         }

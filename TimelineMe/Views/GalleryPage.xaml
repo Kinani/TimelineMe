@@ -19,24 +19,19 @@
         <conv:CompostionFileNameToImageAsyncConverter x:Key="CompostionFileNameToImageAsyncConverter"/>
         <conv:ASPArgsConverter x:Key="ASPArgsConverter"/>
     </Page.Resources>
-    <Grid x:Name="rootGrid">
-        <!--TODO:: Hide content Add ASP results with the required funcs-->
-        <ProgressBar x:Name="myIndeterminateProbar" HorizontalContentAlignment="Stretch" Height="auto" IsIndeterminate="True" Visibility="{Binding ProBarVisibility}"/>
-        <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="{Binding ContentGridVisibility}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid x:Name="HeaderGrid" Grid.Row="0" Margin="0,3,0,0">
+    <Grid x:Name="rootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="HeaderGrid" Grid.Row="0" Margin="0,3,3,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock FontSize="20" Text="{Binding TextBlockHeader}"/>
                 <AutoSuggestBox x:Name="asb" Grid.Column="1" MinWidth="296"  HorizontalAlignment="Right" 
-                        PlaceholderText="Search by tags or Emotions"
+                        PlaceholderText="Search by tag"
                         QueryIcon="Find">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="QuerySubmitted">
@@ -47,6 +42,59 @@
                     </interactivity:Interaction.Behaviors>
                 </AutoSuggestBox>
             </Grid>
+        
+        <!--TODO:: Hide content Add ASP results with the required funcs-->
+        <ProgressBar x:Name="myIndeterminateProbar" Grid.Row="1" HorizontalContentAlignment="Stretch" Height="auto" IsIndeterminate="True" Visibility="{Binding ProBarVisibility}"/>
+        <Grid x:Name="SerachResultGrid" Grid.Row="1" Visibility="{Binding SearchResultGridVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <ListView x:Name="SearchResultsImagesListView" ItemsSource="{Binding ASPMediaCollectionResult}" SelectionMode="Single">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="SelectionChanged">
+                        <core:InvokeCommandAction Command="{x:Bind Vm.UpdateSelectedImages}"
+                                                  InputConverter="{StaticResource SelectionChangedConverter}"
+                                                  InputConverterParameter="{Binding ElementName=SearchResultsImagesListView}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Padding="3" Orientation="Horizontal">
+                            <Image Width="50" Height="50" Stretch="UniformToFill" Margin="0,0,5,0">
+                                <Image.Source>
+                                    <BitmapImage ImageFailed="BitmapImage_ImageFailed" ImageOpened="BitmapImage_ImageOpened" UriSource="{Binding MediaName,Converter = {StaticResource MediaNameConverter}}"></BitmapImage>
+                                </Image.Source>
+                            </Image>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock  FontSize="15" Text="{Binding CaptureDate}" TextWrapping="WrapWholeWords"></TextBlock>
+                                <TextBlock FontFamily="13" TextWrapping="WrapWholeWords" Text="{Binding HighestEmotion, Converter={StaticResource HighestEmoToTextConverter}}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <CommandBar Grid.Row="2" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
+                <AppBarButton x:Name="SrchResFullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.MediaClikcedForPreview}"/>
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </AppBarButton>
+            </CommandBar>
+        </Grid>
+        <Grid x:Name="ContentGrid" Grid.Row="1" Visibility="{Binding ContentGridVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
             <Grid x:Name="CapturedImagesGrid" Grid.Row="1">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Loaded">
