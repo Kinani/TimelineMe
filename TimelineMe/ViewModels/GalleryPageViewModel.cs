@@ -250,11 +250,12 @@ namespace TimelineMe.ViewModels
                     {
                         ProBarVisibility = Visibility.Collapsed;
                         ContentGridVisibility = Visibility.Visible;
+                        TextBlockHeader = "Images captured:";
                         await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
                              .RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                                  {
                                      var dialog = new MessageDialog("No results found:(");
-                                     dialog.Commands.Add(new UICommand("K") { Id = 0 });
+                                     dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
                                      await dialog.ShowAsync();
                                  });
                     }
