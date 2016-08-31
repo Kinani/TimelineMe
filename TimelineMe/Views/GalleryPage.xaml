@@ -76,7 +76,13 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="3,0,0,0">
+                <Button x:Name="FinishBtn" Command="{x:Bind Vm.FinishedSearching}">
+                    <Button.Content>
+                        <TextBlock Text="Get me back to the Gallery" TextWrapping="Wrap"/>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
             <CommandBar Grid.Row="2" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
                 <AppBarButton x:Name="SrchResFullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
                     <interactivity:Interaction.Behaviors>

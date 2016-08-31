@@ -269,6 +269,26 @@ namespace TimelineMe.ViewModels
             }
         }
 
+        private RelayCommand finishedSearching;
+        public RelayCommand FinishedSearching
+        {
+            get
+            {
+                finishedSearching = new RelayCommand(() =>
+                {
+                    SearchResultGridVisibility = Visibility.Collapsed;
+                    ContentGridVisibility = Visibility.Visible;
+                    TextBlockHeader = "Images captured:";
+                });
+                return finishedSearching;
+            }
+            set
+            {
+                finishedSearching = value;
+            }
+        }
+
+
         private RelayCommand galleryPageLoaded;
 
 
@@ -283,6 +303,7 @@ namespace TimelineMe.ViewModels
                     ASPMediaCollectionResult = new ObservableCollection<Media>();
                     MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
                     MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
+                    selectedCMPCollection = new List<MediaGroup>();//TODO Check this.
                     MediaSelectedON = false;
                     MediaGroupSelectedON = false;
                     TextBlockHeader = "Images captured:";
@@ -518,8 +539,14 @@ namespace TimelineMe.ViewModels
         {
             ContentGridVisibility = Visibility.Collapsed;
             ProBarVisibility = Visibility.Visible;
-
-            await mediaAdmin.MergeMedias(selectedMediaCollection);
+            if (selectedCMPCollection.Count == 1)
+            {
+                await mediaAdmin.MergeMedias(selectedMediaCollection, selectedCMPCollection[0]);
+            }
+            else
+            {
+                await mediaAdmin.MergeMedias(selectedMediaCollection);
+            }
             mediaAdmin.Initialize();
             MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
             MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
