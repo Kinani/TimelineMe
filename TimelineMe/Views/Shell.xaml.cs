@@ -47,7 +47,7 @@ namespace TimelineMe.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            App.ShellFrame = Frame;
+            App.ShellFrame = AppFrame;
         }
 
         private void Option3_Checked(object sender, RoutedEventArgs e)
