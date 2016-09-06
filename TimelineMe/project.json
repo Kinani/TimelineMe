@@ -6,9 +6,11 @@
     "Microsoft.ProjectOxford.Common": "1.0.308",
     "Microsoft.ProjectOxford.Emotion": "1.0.326",
     "Microsoft.ProjectOxford.Vision": "1.0.354",
+    "Microsoft.Toolkit.Uwp.Notifications": "1.0.0",
     "Microsoft.Toolkit.Uwp.UI.Controls": "1.0.0",
     "Microsoft.Xaml.Behaviors.Uwp.Managed": "1.1.0",
     "MvvmLight": "5.3.0",
+    "QueryString.NET": "1.0.0",
     "runtime.native.System.IO.Compression": "4.1.0",
     "runtime.win7.System.Private.Uri": {
       "version": "4.0.1",

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.QueryStringDotNET;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TimelineMe.Common;
 using TimelineMe.Models;
 using TimelineMe.Views;
 using Windows.ApplicationModel;
@@ -21,11 +23,11 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace TimelineMe
-{   
+{
     sealed partial class App : Application
     {
         public static Frame ShellFrame;
-
+        public NotificationsAdmin NAdmin = new NotificationsAdmin();
         public App()
         {
             this.InitializeComponent();
@@ -34,6 +36,7 @@ namespace TimelineMe
             {
                 db.Database.Migrate();
             }
+            NAdmin.SendAlarmToast(true);
         }
 
         private void AdjustScreenMode()
@@ -46,17 +49,61 @@ namespace TimelineMe
                 if (view.IsFullScreenMode)
                     view.ExitFullScreenMode();
 
-                
+
             }
             else
             {
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
             }
-            
-            
+
+
         }
 
-        
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            // Get the root frame
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: Load state from previously suspended application
+                }
+
+                Window.Current.Content = rootFrame;
+            }
+
+
+            // Handle toast activation
+            if (e is ToastNotificationActivatedEventArgs)
+            {
+                var toastActivationArgs = e as ToastNotificationActivatedEventArgs;
+
+                // Parse the query string
+                QueryString args = QueryString.Parse(toastActivationArgs.Argument);
+
+                // See what action is being requested 
+
+                if (args["action"] == "CapturePage")
+                {
+                    if (ShellFrame.Content is CapturePage)
+                    { }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(Shell));
+                        //ShellFrame.Navigate(typeof(CapturePage));
+                    }
+                }
+
+            }
+
+            // TODO: Handle other types of activation
+
+            // Ensure the current window is active
+            Window.Current.Activate();
+        }
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
@@ -92,7 +139,7 @@ namespace TimelineMe
                 AdjustScreenMode();
                 Window.Current.Activate();
 
-                
+
 
             }
         }
