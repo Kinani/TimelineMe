@@ -55,8 +55,8 @@ namespace TimelineMe.Views
             var items = new List<MenuItem>();
             items.Add(new MenuItem() { Icon = Symbol.Home, Name = "Home", PageType = typeof(Views.HomePage) });
             items.Add(new MenuItem() { Icon = Symbol.Camera, Name = "Capture Photo", PageType = typeof(Views.CapturePage) });
-            items.Add(new MenuItem() { Icon = Symbol.BrowsePhotos, Name = "TimelineMe Gallery", PageType = typeof(Views.GalleryPage) });
-            items.Add(new MenuItem() { Icon = Symbol.Shop, Name = "TimelineMe Analytics", PageType = typeof(Views.AnalyticsPage) });
+            items.Add(new MenuItem() { Icon = Symbol.Pictures, Name = "TimelineMe Gallery", PageType = typeof(Views.GalleryPage) });
+            items.Add(new MenuItem() { Icon = Symbol.ShowResults, Name = "TimelineMe Analytics", PageType = typeof(Views.AnalyticsPage) });
             return items;
         }
 

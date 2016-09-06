@@ -83,8 +83,8 @@
                     </Button.Content>
                 </Button>
             </StackPanel>
-            <CommandBar Grid.Row="2" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
-                <AppBarButton x:Name="SrchResFullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
+            <CommandBar Grid.Row="2" ClosedDisplayMode="Compact" FlowDirection="LeftToRight" Background="White">
+                <AppBarButton x:Name="SrchResFullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}"  Foreground="Black">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="Click">
                             <core:InvokeCommandAction Command="{x:Bind Vm.MediaClikcedForPreview}"/>
@@ -174,7 +174,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
-            <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight">
+            <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight" Background="White">
                 <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}" IsEnabled="{Binding MergeEnable}"/>
                 <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
                     <interactivity:Interaction.Behaviors>
