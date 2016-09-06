@@ -10,6 +10,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -24,18 +25,38 @@ namespace TimelineMe
     sealed partial class App : Application
     {
         public static Frame ShellFrame;
-        
+
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
             using (var db = new MediaContext())
             {
                 db.Database.Migrate();
             }
         }
 
+        private void AdjustScreenMode()
+        {
+            //DetermineCurrentDeviceType();
+            bool isPhone = ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
+            ApplicationView view = ApplicationView.GetForCurrentView();
+            if (!isPhone)
+            {
+                if (view.IsFullScreenMode)
+                    view.ExitFullScreenMode();
+
+                
+            }
+            else
+            {
+                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+            }
+            
+            
+        }
+
+        
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
@@ -67,9 +88,12 @@ namespace TimelineMe
                 {
                     rootFrame.Navigate(typeof(Shell), e.Arguments);
                 }
-                
+
+                AdjustScreenMode();
                 Window.Current.Activate();
+
                 
+
             }
         }
 
@@ -85,4 +109,13 @@ namespace TimelineMe
             deferral.Complete();
         }
     }
+    public enum Device
+    {
+        Phone,
+        Tablet,
+        Desktop,
+        Xbox,
+        Iot,
+        Continuum
+    };
 }

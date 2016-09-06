@@ -22,27 +22,20 @@ namespace TimelineMe.Views
     /// </summary>
     public sealed partial class Shell : Page
     {
-        public Frame AppFrame { get { return Content; } }
+        public Frame AppFrame { get { return contentFrame; } }
 
-        private void Option1Button_Checked(object sender, RoutedEventArgs e)
-        {
-            Content.Navigate(typeof(CapturePage));
-            NavigationPane.IsPaneOpen = false;
-        }
-
-        private void Option2Button_Checked(object sender, RoutedEventArgs e)
-        {
-            Content.Navigate(typeof(GalleryPage));
-            NavigationPane.IsPaneOpen = false;
-        }
-
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationPane.IsPaneOpen = !NavigationPane.IsPaneOpen;
-        }
         public Shell()
         {
             this.InitializeComponent();
+            hamburgerMenuControl.ItemsSource = MenuItem.GetMainItems();
+            hamburgerMenuControl.OptionsItemsSource = MenuItem.GetOptionsItems();
+        }
+
+        private void OnMenuItemClick(object sender, ItemClickEventArgs e)
+        {
+            var menuItem = e.ClickedItem as MenuItem;
+            contentFrame.Navigate(menuItem.PageType);
+            hamburgerMenuControl.IsPaneOpen = false;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -50,10 +43,30 @@ namespace TimelineMe.Views
             App.ShellFrame = AppFrame;
         }
 
-        private void Option3_Checked(object sender, RoutedEventArgs e)
+    }
+    public class MenuItem
+    {
+        public Symbol Icon { get; set; }
+        public string Name { get; set; }
+        public Type PageType { get; set; }
+
+        public static List<MenuItem> GetMainItems()
         {
-            Content.Navigate(typeof(AnalyticsPage));
-            NavigationPane.IsPaneOpen = false;
+            var items = new List<MenuItem>();
+            items.Add(new MenuItem() { Icon = Symbol.Home, Name = "Home", PageType = typeof(Views.HomePage) });
+            items.Add(new MenuItem() { Icon = Symbol.Camera, Name = "Capture Photo", PageType = typeof(Views.CapturePage) });
+            items.Add(new MenuItem() { Icon = Symbol.BrowsePhotos, Name = "TimelineMe Gallery", PageType = typeof(Views.GalleryPage) });
+            items.Add(new MenuItem() { Icon = Symbol.Shop, Name = "TimelineMe Analytics", PageType = typeof(Views.AnalyticsPage) });
+            return items;
+        }
+
+        public static List<MenuItem> GetOptionsItems()
+        {
+            var items = new List<MenuItem>();
+            items.Add(new MenuItem() { Icon = Symbol.Setting, Name = "Settings", PageType = typeof(Views.Settings) });
+            items.Add(new MenuItem() { Icon = Symbol.Help, Name = "About", PageType = typeof(Views.ContactDeveloper) });
+            return items;
         }
     }
 }
+

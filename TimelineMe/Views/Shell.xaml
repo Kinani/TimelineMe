@@ -5,61 +5,31 @@
     xmlns:local="using:TimelineMe.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
-    <Grid x:Name="LayoutRoot" Background="White">
-        <SplitView x:Name="NavigationPane" DisplayMode="CompactOverlay">
-            <SplitView.Pane>
 
-                <Grid>
+    <Page.Resources>
+        <DataTemplate x:Key="DefaultTemplate" x:DataType="local:MenuItem">
+            <Grid Width="240" Height="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <SymbolIcon Grid.Column="0" Symbol="{x:Bind Icon, Mode=OneWay}" Foreground="White" />
+                <TextBlock Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}" FontSize="16" VerticalAlignment="Center" Foreground="White" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="44" />
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Button x:Name="HamburgerButton" Grid.Row="0" Style="{StaticResource MenuItemButtonStyle}" Tag="&#xE700;" Click="HamburgerButton_Click" />
-
-                    <StackPanel x:Name="NavigationMenu" Orientation="Vertical" Grid.Row="1">
-                        <RadioButton x:Name="Option1"
-           GroupName="Group1"
-           Style="{StaticResource NavigationButtonStyle}"
-           Tag="&#xE76E;"
-           Checked="Option1Button_Checked"
-           Content="Capture new image"
-           />
-                        <RadioButton x:Name="Option2"
-           GroupName="Group1"
-           Style="{StaticResource NavigationButtonStyle}"
-           Tag="&#xE76E;"
-           Checked="Option2Button_Checked"
-           Content="Gallery"
-           />
-                        <RadioButton x:Name="Option3"
-                                     GroupName="Group1"
-                                     Style="{StaticResource NavigationButtonStyle}"
-                                     Tag="&#xE76E;"
-                                     Checked="Option3_Checked"
-                                     Content="Analytics"/>
-                    </StackPanel>
-
-                </Grid>
-
-            </SplitView.Pane>
-            <SplitView.Content>
-
-                <Frame x:Name="Content">
-                    <Frame.ContentTransitions>
-                        <TransitionCollection>
-                            <NavigationThemeTransition>
-                                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                                    <EntranceNavigationTransitionInfo/>
-                                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                            </NavigationThemeTransition>
-                        </TransitionCollection>
-                    </Frame.ContentTransitions>
-                </Frame>
-            </SplitView.Content>
-        </SplitView>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <toolkit:HamburgerMenu x:Name="hamburgerMenuControl"
+                                PaneBackground="Black"
+                                Foreground="White"
+                                ItemTemplate="{StaticResource DefaultTemplate}"
+                                ItemClick="OnMenuItemClick"
+                                OptionsItemTemplate="{StaticResource DefaultTemplate}"
+                                OptionsItemClick="OnMenuItemClick" DisplayMode="CompactInline">
+            <Frame x:Name="contentFrame"/>
+        </toolkit:HamburgerMenu>
     </Grid>
-
 </Page>
