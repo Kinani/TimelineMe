@@ -61,17 +61,15 @@ namespace TimelineMe
 
         protected override void OnActivated(IActivatedEventArgs e)
         {
+           
             // Get the root frame
             Frame rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null)
             {
                 rootFrame = new Frame();
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
+                rootFrame.NavigationFailed += OnNavigationFailed;
+                
                 Window.Current.Content = rootFrame;
             }
 
@@ -92,9 +90,13 @@ namespace TimelineMe
                     { }
                     else
                     {
-                        rootFrame.Navigate(typeof(Shell));
+                        rootFrame.Navigate(typeof(Shell), e.PreviousExecutionState);
                         //ShellFrame.Navigate(typeof(CapturePage));
                     }
+                }
+                if (rootFrame.Content == null)
+                {
+                    rootFrame.Navigate(typeof(Shell), e.PreviousExecutionState);
                 }
 
             }
@@ -102,6 +104,7 @@ namespace TimelineMe
             // TODO: Handle other types of activation
 
             // Ensure the current window is active
+            AdjustScreenMode();
             Window.Current.Activate();
         }
         protected override void OnLaunched(LaunchActivatedEventArgs e)
