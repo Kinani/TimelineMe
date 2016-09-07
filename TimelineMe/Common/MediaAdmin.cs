@@ -104,7 +104,7 @@ namespace TimelineMe.Common
         }
 
 
-        public async Task MergeMedias(List<Media> medias, MediaGroup currentMediaGroup = null, double duration = 2)
+        public async Task MergeMedias(List<Media> medias, MediaGroup currentMediaGroup = null)
         {
             
             // Use Profile for output vid/cmp? file 
@@ -180,7 +180,7 @@ namespace TimelineMe.Common
 
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(TLMESettings.DurationInSecForEachItem)));
                     composition.Clips.Add(mediaClips[i]);
                 }
 
@@ -262,7 +262,7 @@ namespace TimelineMe.Common
                 //TODO: make sure this works.
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(duration)));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(TLMESettings.DurationInSecForEachItem)));
                     composition.Clips.Add(mediaClips[i]);
                 }
                 
