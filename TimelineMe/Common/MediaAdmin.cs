@@ -72,8 +72,8 @@ namespace TimelineMe.Common
         public async Task<bool> AddMedia(StorageFile media)
         {
             Media newMedia = new Media();
-            // TODO: Remove EnableOxford for Debug only
-            if (MyCredentials.EnableOxford == true)
+            
+            if (TLMESettings.EnableOxford == true)
             {
                 AnalysisResult analysisResult = await DoVision(media);
                 Emotion[] emotions = await DoFeel(media);

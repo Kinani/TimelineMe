@@ -9,5 +9,6 @@ namespace TimelineMe.Common
     public static class TLMESettings
     {
         public static DateTimeOffset ScheduledDueTime { get; set; } = DateTimeOffset.UtcNow.AddSeconds(5);
+        public static bool EnableOxford { get; set; } = true;
     }
 }
