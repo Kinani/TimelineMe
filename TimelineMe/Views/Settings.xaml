@@ -3,10 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:TimelineMe.Views"
+    xmlns:conv="using:TimelineMe.Converters"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding SettingsPageViewModelInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:ToggleToggledConverter x:Key="ToggleToggledConverter"/>
+        <conv:TimeChangedConverter x:Key="TimeChangedConverter"/>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -15,10 +23,34 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="HeaderTxtBlock" Text="Settings" Style="{StaticResource HeaderTextBlockStyle}" Margin="5,0,0,0"/>
         <StackPanel x:Name="SettingsStackPanel" Margin="5,10,0,0" Grid.Row="1">
-            <ToggleSwitch x:Name="OxfordToggle" Header="Use Artificial Intelligence" IsOn="True"/>
+            <ToggleSwitch x:Name="OxfordToggle" Header="Use Artificial Intelligence" IsOn="True">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Toggled">
+                        <core:InvokeCommandAction Command="{x:Bind Vm.OxfordToggled}"
+                                                      InputConverter="{StaticResource ToggleToggledConverter}"
+                                                      InputConverterParameter="{Binding ElementName=OxfordToggle}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </ToggleSwitch>
             <StackPanel x:Name="ReminderStackPanel"></StackPanel>
-            <ToggleSwitch x:Name="ToastToggle" Header="Everyday reminder" IsOn="True"/>
-            <TimePicker x:Name="AlarmTimePicker" Header="Reminder Time"/>
+            <ToggleSwitch x:Name="ToastToggle" Header="Everyday reminder" IsOn="True">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Toggled">
+                        <core:InvokeCommandAction Command="{x:Bind Vm.ToastToggled}"
+                                                      InputConverter="{StaticResource ToggleToggledConverter}"
+                                                      InputConverterParameter="{Binding ElementName=ToastToggle}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </ToggleSwitch>
+            <TimePicker x:Name="AlarmTimePicker" Header="Reminder Time" IsEnabled="{Binding IsAlarmTimePickerOn}">
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="TimeChanged">
+                        <core:InvokeCommandAction Command="{x:Bind Vm.TimePickerChanged}"
+                                                      InputConverter="{StaticResource TimeChangedConverter}"
+                                                      InputConverterParameter="{Binding ElementName=AlarmTimePicker}"/>
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+            </TimePicker>
         </StackPanel>
     </Grid>
 </Page>

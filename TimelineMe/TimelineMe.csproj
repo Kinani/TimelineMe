@@ -104,6 +104,8 @@
     <Compile Include="Converters\HighestEmoToTextConverter.cs" />
     <Compile Include="Converters\MediaNameConverter.cs" />
     <Compile Include="Converters\SelectionChangedConverter.cs" />
+    <Compile Include="Converters\TimeChangedConverter.cs" />
+    <Compile Include="Converters\ToggleToggledConverter.cs" />
     <Compile Include="Migrations\20160813111455_NewMigration.cs" />
     <Compile Include="Migrations\20160813111455_NewMigration.designer.cs">
       <DependentUpon>20160813111455_NewMigration.cs</DependentUpon>
