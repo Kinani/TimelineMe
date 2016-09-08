@@ -116,6 +116,7 @@
     <Compile Include="ViewModels\AnalyticsPageViewModel.cs" />
     <Compile Include="ViewModels\CapturePageViewModel.cs" />
     <Compile Include="ViewModels\GalleryPageViewModel.cs" />
+    <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\AnalyticsPage.xaml.cs">
       <DependentUpon>AnalyticsPage.xaml</DependentUpon>
