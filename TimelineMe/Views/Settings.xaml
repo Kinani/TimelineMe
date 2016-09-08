@@ -28,7 +28,7 @@
                     <core:EventTriggerBehavior EventName="Toggled">
                         <core:InvokeCommandAction Command="{x:Bind Vm.OxfordToggled}"
                                                       InputConverter="{StaticResource ToggleToggledConverter}"
-                                                      InputConverterParameter="{Binding ElementName=OxfordToggle}"/>
+                                                      InputConverterParameter="{Binding ElementName = OxfordToggle}"/>
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </ToggleSwitch>
@@ -38,7 +38,7 @@
                     <core:EventTriggerBehavior EventName="Toggled">
                         <core:InvokeCommandAction Command="{x:Bind Vm.ToastToggled}"
                                                       InputConverter="{StaticResource ToggleToggledConverter}"
-                                                      InputConverterParameter="{Binding ElementName=ToastToggle}"/>
+                                                      InputConverterParameter="{Binding ElementName = ToastToggle}"/>
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </ToggleSwitch>
@@ -47,7 +47,7 @@
                     <core:EventTriggerBehavior EventName="TimeChanged">
                         <core:InvokeCommandAction Command="{x:Bind Vm.TimePickerChanged}"
                                                       InputConverter="{StaticResource TimeChangedConverter}"
-                                                      InputConverterParameter="{Binding ElementName=AlarmTimePicker}"/>
+                                                      InputConverterParameter="{Binding ElementName = AlarmTimePicker}"/>
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </TimePicker>

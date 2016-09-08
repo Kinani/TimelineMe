@@ -12,22 +12,7 @@ namespace TimelineMe.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            ToggleSwitch tgleSw = value as ToggleSwitch;
-            if (tgleSw != null)
-            {
-                if (tgleSw.IsOn == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                throw new NullReferenceException();
-            }
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

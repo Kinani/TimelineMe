@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock FontSize="20" Text="{Binding TextBlockHeader}"/>
+                <TextBlock FontSize="20" Text="{Binding TextBlockHeader}" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}"/>
                 <AutoSuggestBox x:Name="asb" Grid.Column="1" MinWidth="296"  HorizontalAlignment="Right" 
                         PlaceholderText="Search by tag"
                         QueryIcon="Find">
@@ -138,7 +138,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock FontSize="20" VerticalAlignment="Top">Timeline Previews:</TextBlock>
+                <TextBlock FontSize="20" VerticalAlignment="Top" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}">Timeline Previews:</TextBlock>
                 <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollMode="Enabled"

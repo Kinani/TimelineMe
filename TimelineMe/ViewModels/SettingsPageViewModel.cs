@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimelineMe.Common;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace TimelineMe.ViewModels
@@ -34,9 +35,11 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-               oxfordToggled = new RelayCommand<object>(tgleValue =>
+               oxfordToggled = new RelayCommand<object>(tgle =>
                {
-                   TLMESettings.EnableOxford = (bool)tgleValue;
+                   RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
+                   ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
+                   TLMESettings.EnableOxford = tglesw.IsOn;
                });
                 return oxfordToggled;
             }
@@ -50,10 +53,12 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                toastToggled = new RelayCommand<object>(tgleValue =>
+                toastToggled = new RelayCommand<object>(tgle =>
                 {
-                    TLMESettings.EnableOxford = (bool)tgleValue;
-                    if (TLMESettings.EnableOxford)
+                    RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
+                    ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
+                    TLMESettings.UseToastNotification = tglesw.IsOn;
+                    if (TLMESettings.UseToastNotification)
                         IsAlarmTimePickerOn = true;
                     else
                         IsAlarmTimePickerOn = false;
@@ -72,7 +77,8 @@ namespace TimelineMe.ViewModels
             {
                 timePickerChanged = new RelayCommand<object>(timepicker =>
                 {
-                    TimePicker timePicker = timepicker as TimePicker;
+                    RoutedEventArgs eventArgs = timepicker as RoutedEventArgs;
+                    TimePicker timePicker = eventArgs.OriginalSource as TimePicker;
                     TLMESettings.ScheduledDueTime = DateTimeOffset.Parse(timePicker.Time.ToString());
                 });
                 return timePickerChanged;
