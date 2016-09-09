@@ -14,6 +14,20 @@ namespace TimelineMe.ViewModels
     public class SettingsPageViewModel : ViewModelBase
     {
         #region Properties
+        private TimeSpan reminderDueTime = TLMESettings.ScheduledDueTime.Offset;
+        public TimeSpan ReminderDueTime
+        {
+            get
+            {
+                return reminderDueTime;
+            }
+            set
+            {
+                reminderDueTime = value;
+                TLMESettings.ScheduledDueTime = DateTimeOffset.Parse(value.ToString());
+                RaisePropertyChanged("ReminderDueTime");
+            }
+        }
         private bool isAlarmTimePickerOn = true;
         public bool IsAlarmTimePickerOn
         {
@@ -70,25 +84,32 @@ namespace TimelineMe.ViewModels
                 toastToggled = value;
             }
         }
-        private RelayCommand<object> timePickerChanged;
-        public RelayCommand<object> TimePickerChanged
-        {
-            get
-            {
-                timePickerChanged = new RelayCommand<object>(timepicker =>
-                {
-                    RoutedEventArgs eventArgs = timepicker as RoutedEventArgs;
-                    TimePicker timePicker = eventArgs.OriginalSource as TimePicker;
-                    TLMESettings.ScheduledDueTime = DateTimeOffset.Parse(timePicker.Time.ToString());
-                });
-                return timePickerChanged;
-            }
-            set
-            {
-                timePickerChanged = value;
-            }
-        }
+        //private RelayCommand<object> timePickerChanged;
+        //public RelayCommand<object> TimePickerChanged
+        //{
+        //    get
+        //    {
+        //        timePickerChanged = new RelayCommand<object>(timepicker =>
+        //        {
+        //            RoutedEventArgs eventArgs = timepicker as RoutedEventArgs;
+        //            TimePicker timePicker = eventArgs.OriginalSource as TimePicker;
+        //            TLMESettings.ScheduledDueTime = DateTimeOffset.Parse(timePicker.Time.ToString());
+        //        });
+        //        return timePickerChanged;
+        //    }
+        //    set
+        //    {
+        //        timePickerChanged = value;
+        //    }
+        //}
+
+      
         #endregion
+
+        public void TimePickerTimeChangedEvent(object sender, TimePickerValueChangedEventArgs e)
+        {
+            ReminderDueTime = e.NewTime;
+        }
         public SettingsPageViewModel() { }
     }
 }

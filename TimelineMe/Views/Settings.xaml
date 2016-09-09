@@ -21,7 +21,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="HeaderTxtBlock" Text="Settings" Style="{StaticResource HeaderTextBlockStyle}" Margin="5,0,0,0"/>
+        <TextBlock x:Name="HeaderTxtBlock" Text="Settings" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}" Margin="5,0,0,0"/>
         <StackPanel x:Name="SettingsStackPanel" Margin="5,10,0,0" Grid.Row="1">
             <ToggleSwitch x:Name="OxfordToggle" Header="Use Artificial Intelligence" IsOn="True">
                 <interactivity:Interaction.Behaviors>
@@ -42,14 +42,8 @@
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </ToggleSwitch>
-            <TimePicker x:Name="AlarmTimePicker" Header="Reminder Time" IsEnabled="{Binding IsAlarmTimePickerOn}">
-                <interactivity:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="TimeChanged">
-                        <core:InvokeCommandAction Command="{x:Bind Vm.TimePickerChanged}"
-                                                      InputConverter="{StaticResource TimeChangedConverter}"
-                                                      InputConverterParameter="{Binding ElementName = AlarmTimePicker}"/>
-                    </core:EventTriggerBehavior>
-                </interactivity:Interaction.Behaviors>
+            <TimePicker x:Name="AlarmTimePicker" Header="Reminder Time" IsEnabled="{Binding IsAlarmTimePickerOn}" Time="{Binding ReminderDueTime,Mode=TwoWay}" TimeChanged="{x:Bind Vm.TimePickerTimeChangedEvent}">
+               
             </TimePicker>
         </StackPanel>
     </Grid>
