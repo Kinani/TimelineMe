@@ -34,5 +34,13 @@ namespace TimelineMe.Views
         {
             this.InitializeComponent();
         }
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            await Vm.OnNavigatingTo();   
+        }
+        protected async override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            await Vm.OnNavigatingFrom();
+        }
     }
 }

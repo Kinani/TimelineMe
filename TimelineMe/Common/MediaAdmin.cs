@@ -73,7 +73,7 @@ namespace TimelineMe.Common
         {
             Media newMedia = new Media();
             
-            if (TLMESettings.EnableOxford == true)
+            if (App.GlobalSettings.EnableOxford == true)
             {
                 AnalysisResult analysisResult = await DoVision(media);
                 Emotion[] emotions = await DoFeel(media);
@@ -180,7 +180,7 @@ namespace TimelineMe.Common
 
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(TLMESettings.DurationInSecForEachItem)));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(App.GlobalSettings.DurationInSecForEachItem)));
                     composition.Clips.Add(mediaClips[i]);
                 }
 
@@ -262,7 +262,7 @@ namespace TimelineMe.Common
                 //TODO: make sure this works.
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(TLMESettings.DurationInSecForEachItem)));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(App.GlobalSettings.DurationInSecForEachItem)));
                     composition.Clips.Add(mediaClips[i]);
                 }
                 

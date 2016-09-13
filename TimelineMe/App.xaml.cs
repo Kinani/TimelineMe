@@ -27,7 +27,7 @@ namespace TimelineMe
     sealed partial class App : Application
     {
         public static Frame ShellFrame;
-        public NotificationsAdmin NAdmin = new NotificationsAdmin();
+        public static TLMESettings GlobalSettings;
         public App()
         {
             this.InitializeComponent();
@@ -36,7 +36,7 @@ namespace TimelineMe
             {
                 db.Database.Migrate();
             }
-            NAdmin.SendAlarmToast(true);
+            GlobalSettings = new TLMESettings();
         }
 
         private void AdjustScreenMode()

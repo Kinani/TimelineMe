@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TimelineMe.Common;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -37,10 +38,11 @@ namespace TimelineMe.Views
             contentFrame.Navigate(menuItem.PageType);
             hamburgerMenuControl.IsPaneOpen = false;
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             App.ShellFrame = AppFrame;
+            App.GlobalSettings =  await TLMESettingsStore.LoadSettingsAsync();
         }
 
     }

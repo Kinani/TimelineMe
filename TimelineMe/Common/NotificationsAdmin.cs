@@ -15,7 +15,7 @@ namespace TimelineMe.Common
         public string DefaultContent { get; private set; } = "TimelineMe needs to see you today!";
         public string DefaultLogo { get; private set; } = "ms-appx:///Assets/.jpg";
 
-        public void SendAlarmToast(bool UseDefaultToast, string title = "", string content = "")
+        public void SendAlarmToast(bool UseDefaultToast,DateTimeOffset timeOffset, string title = "", string content = "")
         {
             if (UseDefaultToast)
             {
@@ -64,7 +64,7 @@ namespace TimelineMe.Common
                     }.ToString()
                 };
                 ToastNotificationManager.History.Clear();
-                ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), TLMESettings.ScheduledDueTime);
+                ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), timeOffset);
                 ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
             }
             else
@@ -116,7 +116,7 @@ namespace TimelineMe.Common
                     }.ToString()
                 };
                 ToastNotificationManager.History.Clear();
-                ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), TLMESettings.ScheduledDueTime);
+                ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), timeOffset);
                 ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
             };
             

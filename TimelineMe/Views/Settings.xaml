@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="HeaderTxtBlock" Text="Settings" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}" Margin="5,0,0,0"/>
         <StackPanel x:Name="SettingsStackPanel" Margin="5,10,0,0" Grid.Row="1">
-            <ToggleSwitch x:Name="OxfordToggle" Header="Use Artificial Intelligence" IsOn="True">
+            <ToggleSwitch x:Name="OxfordToggle" Header="Use Artificial Intelligence" IsOn="{Binding EnableOxford}">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Toggled">
                         <core:InvokeCommandAction Command="{x:Bind Vm.OxfordToggled}"
@@ -33,7 +33,7 @@
                 </interactivity:Interaction.Behaviors>
             </ToggleSwitch>
             <StackPanel x:Name="ReminderStackPanel"></StackPanel>
-            <ToggleSwitch x:Name="ToastToggle" Header="Everyday reminder" IsOn="True">
+            <ToggleSwitch x:Name="ToastToggle" Header="Everyday reminder" IsOn="{Binding EnableToast}">
                 <interactivity:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="Toggled">
                         <core:InvokeCommandAction Command="{x:Bind Vm.ToastToggled}"
