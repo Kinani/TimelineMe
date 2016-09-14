@@ -37,6 +37,7 @@ namespace TimelineMe.Common
         public List<MediaGroup> MediaGroupList = new List<MediaGroup>();
 
         private StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public MediaAdmin()
         {
 
@@ -73,7 +74,7 @@ namespace TimelineMe.Common
         {
             Media newMedia = new Media();
             
-            if (App.GlobalSettings.EnableOxford == true)
+            if ((bool)localSettings.Values["EnableOxford"])
             {
                 AnalysisResult analysisResult = await DoVision(media);
                 Emotion[] emotions = await DoFeel(media);
@@ -180,7 +181,7 @@ namespace TimelineMe.Common
 
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(App.GlobalSettings.DurationInSecForEachItem)));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds((int)localSettings.Values["DurationInSecForEachImage"])));
                     composition.Clips.Add(mediaClips[i]);
                 }
 
@@ -262,7 +263,7 @@ namespace TimelineMe.Common
                 //TODO: make sure this works.
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(App.GlobalSettings.DurationInSecForEachItem)));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds((int)localSettings.Values["DurationInSecForEachImage"])));
                     composition.Clips.Add(mediaClips[i]);
                 }
                 

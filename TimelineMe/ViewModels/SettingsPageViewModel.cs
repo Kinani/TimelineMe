@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimelineMe.Common;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -14,6 +15,7 @@ namespace TimelineMe.ViewModels
     public class SettingsPageViewModel : ViewModelBase
     {
         //public TLMESettings settings;
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public NotificationsAdmin NAdmin;
         #region Properties
         private TimeSpan reminderDueTime;
@@ -26,7 +28,9 @@ namespace TimelineMe.ViewModels
             set
             {
                 reminderDueTime = value;
-                App.GlobalSettings.ScheduledDueTime = DateTimeOffset.Parse(value.ToString());
+                DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(value);
+                localSettings.Values["ToastDueTime"] = alarmDate.ToString();
+                localSettings.Values["DueTimeSpanOnly"] = value.ToString(@"hh\:mm\:ss");
                 RaisePropertyChanged("ReminderDueTime");
             }
         }
@@ -40,8 +44,26 @@ namespace TimelineMe.ViewModels
             set
             {
                 enableOxford = value;
-                App.GlobalSettings.EnableOxford = value;
+                if (value)
+                    localSettings.Values["EnableOxford"] = true;
+                else
+                    localSettings.Values["EnableOxford"] = false;
+
                 RaisePropertyChanged("EnableOxford");
+            }
+        }
+        private string durationInSec;
+        public string DurationInSec
+        {
+            get
+            {
+                return durationInSec;
+            }
+            set
+            {
+                durationInSec = value;
+                localSettings.Values["DurationInSecForEachImage"] = value;
+                RaisePropertyChanged("DurationInSec");
             }
         }
         private bool enableToast;
@@ -54,7 +76,10 @@ namespace TimelineMe.ViewModels
             set
             {
                 enableToast = value;
-                App.GlobalSettings.UseToastNotification = value;
+                if (value)
+                    localSettings.Values["EnableToast"] = true;
+                else
+                    localSettings.Values["EnableToast"] = false;
                 RaisePropertyChanged("EnableToast");
             }
         }
@@ -79,12 +104,12 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-               oxfordToggled = new RelayCommand<object>(tgle =>
-               {
-                   RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
-                   ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
-                   EnableOxford = tglesw.IsOn;
-               });
+                oxfordToggled = new RelayCommand<object>(tgle =>
+                {
+                    RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
+                    ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
+                    EnableOxford = tglesw.IsOn;
+                });
                 return oxfordToggled;
             }
             set
@@ -114,49 +139,25 @@ namespace TimelineMe.ViewModels
                 toastToggled = value;
             }
         }
-        //private RelayCommand<object> timePickerChanged;
-        //public RelayCommand<object> TimePickerChanged
-        //{
-        //    get
-        //    {
-        //        timePickerChanged = new RelayCommand<object>(timepicker =>
-        //        {
-        //            RoutedEventArgs eventArgs = timepicker as RoutedEventArgs;
-        //            TimePicker timePicker = eventArgs.OriginalSource as TimePicker;
-        //            TLMESettings.ScheduledDueTime = DateTimeOffset.Parse(timePicker.Time.ToString());
-        //        });
-        //        return timePickerChanged;
-        //    }
-        //    set
-        //    {
-        //        timePickerChanged = value;
-        //    }
-        //}
 
-      
+
         #endregion
 
-        public void TimePickerTimeChangedEvent(object sender, TimePickerValueChangedEventArgs e)
-        {
-            ReminderDueTime = e.NewTime;
-        }
-        public async Task OnNavigatingTo()
-        {
-            App.GlobalSettings = await TLMESettingsStore.LoadSettingsAsync();
-        }
-        public async Task OnNavigatingFrom()
-        {
-            //if(EnableToast)
-            //    NAdmin.SendAlarmToast(true, App.GlobalSettings.ScheduledDueTime);
-            bool success = await TLMESettingsStore.SaveSettings(App.GlobalSettings);
-        }
+       
         public SettingsPageViewModel()
         {
-            App.GlobalSettings = new TLMESettings();
             NAdmin = new NotificationsAdmin();
-            //ReminderDueTime = TimeSpan.Parse(App.GlobalSettings.ScheduledDueTime.ToString("Hh:Mm"));
-            EnableOxford = App.GlobalSettings.EnableOxford;
-            EnableToast = App.GlobalSettings.UseToastNotification;
+            if (localSettings.Values.ContainsKey("SettingsLoaded"))
+            {
+                EnableOxford = (bool)localSettings.Values["EnableOxford"];
+                EnableToast = (bool)localSettings.Values["EnableToast"];
+                IsAlarmTimePickerOn = (bool)localSettings.Values["EnableToast"];
+                DurationInSec = localSettings.Values["DurationInSecForEachImage"] as string;
+                TimeSpan temp = new TimeSpan();
+                string x = (string)localSettings.Values["DueTimeSpanOnly"];
+                TimeSpan.TryParse(x, out temp);
+                ReminderDueTime = temp;
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,7 +28,8 @@ namespace TimelineMe
     sealed partial class App : Application
     {
         public static Frame ShellFrame;
-        public static TLMESettings GlobalSettings;
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        public static string defToastTime = "07:00 AM";
         public App()
         {
             this.InitializeComponent();
@@ -36,9 +38,30 @@ namespace TimelineMe
             {
                 db.Database.Migrate();
             }
-            GlobalSettings = new TLMESettings();
+            FirstRunOnly();
         }
 
+        private void FirstRunOnly()
+        {
+            if(localSettings.Values.ContainsKey("SettingsLoaded"))
+            {
+                return;
+            }
+            else
+            {
+                localSettings.Values["SettingsLoaded"] = true;
+                localSettings.Values["EnableOxford"] = true;
+                localSettings.Values["EnableToast"] = true;
+                localSettings.Values["DurationInSecForEachImage"] = 2;
+                localSettings.Values["ToastSentToday"] = false;
+                TimeSpan temp = new TimeSpan(07,00,00);
+                //TimeSpan.TryParse(defToastTime, out temp);
+                DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(temp);
+                localSettings.Values["ToastDueTime"] = alarmDate.ToString();
+                localSettings.Values["DueTimeSpanOnly"] = string.Format(@"{0:hh\:mm\:ss}", temp);
+                //localSettings.Values["DueTimeSpanOnly"] = temp.ToString(@"h:mm tt");
+            }
+        }
         private void AdjustScreenMode()
         {
             //DetermineCurrentDeviceType();

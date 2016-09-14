@@ -42,7 +42,7 @@ namespace TimelineMe.Views
         {
             base.OnNavigatedTo(e);
             App.ShellFrame = AppFrame;
-            App.GlobalSettings =  await TLMESettingsStore.LoadSettingsAsync();
+            
         }
 
     }

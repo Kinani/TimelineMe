@@ -32,6 +32,14 @@
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </ToggleSwitch>
+            <StackPanel Margin="0,5,0,5">
+                <TextBlock Foreground="Black">Time for each image in seconds:</TextBlock>
+                <TextBox x:Name="TimeTxtBlck" Width="50" HorizontalAlignment="Left" Text="{Binding DurationInSec,Mode=TwoWay}"/>
+
+            </StackPanel>
+            
+            
+            
             <StackPanel x:Name="ReminderStackPanel"></StackPanel>
             <ToggleSwitch x:Name="ToastToggle" Header="Everyday reminder" IsOn="{Binding EnableToast}">
                 <interactivity:Interaction.Behaviors>
@@ -42,9 +50,7 @@
                     </core:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </ToggleSwitch>
-            <TimePicker x:Name="AlarmTimePicker" Header="Reminder Time" IsEnabled="{Binding IsAlarmTimePickerOn}" Time="{Binding ReminderDueTime,Mode=TwoWay}" TimeChanged="{x:Bind Vm.TimePickerTimeChangedEvent}">
-               
-            </TimePicker>
+            <TimePicker x:Name="AlarmTimePicker" Header="Reminder Time" IsEnabled="{Binding IsAlarmTimePickerOn}" Time="{Binding ReminderDueTime , Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
 </Page>
