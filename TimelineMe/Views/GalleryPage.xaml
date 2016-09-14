@@ -183,6 +183,13 @@
                         </core:EventTriggerBehavior>
                     </interactivity:Interaction.Behaviors>
                 </AppBarButton>
+                <AppBarButton x:Name="ExportCMPAppBrBtn" Icon="Save" Label="Save Video" IsEnabled="{Binding CMPPreview}">
+                    <interactivity:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:InvokeCommandAction Command="{x:Bind Vm.CMPClikcedForSave}"/>
+                        </core:EventTriggerBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </AppBarButton>
                 <AppBarButton x:Name="PreviewCMPAppBrBtn" Icon="View" Label="Preview Timeline" IsEnabled="{Binding CMPPreview}">
                     <interactivity:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="Click">

@@ -181,7 +181,7 @@ namespace TimelineMe.Common
 
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds((int)localSettings.Values["DurationInSecForEachImage"])));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(int.Parse(localSettings.Values["DurationInSecForEachImage"].ToString()))));
                     composition.Clips.Add(mediaClips[i]);
                 }
 
@@ -263,7 +263,7 @@ namespace TimelineMe.Common
                 //TODO: make sure this works.
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
-                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds((int)localSettings.Values["DurationInSecForEachImage"])));
+                    mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(int.Parse(localSettings.Values["DurationInSecForEachImage"].ToString()))));
                     composition.Clips.Add(mediaClips[i]);
                 }
                 

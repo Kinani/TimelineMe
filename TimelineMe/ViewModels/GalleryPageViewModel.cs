@@ -14,6 +14,7 @@ using TimelineMe.Common;
 using TimelineMe.Models;
 using TimelineMe.Views;
 using Windows.Media.Capture;
+using Windows.Media.Editing;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -339,8 +340,8 @@ namespace TimelineMe.ViewModels
                             PreviewEnable = false;
                             MergeEnable = true;
                         }
-                           // TODO
-                           if (selectedMediaCollection.Count >= 1)
+                        // TODO
+                        if (selectedMediaCollection.Count >= 1)
                         {
                             MediaSelectedON = true;
                             if (MediaGroupSelectedON)
@@ -467,6 +468,56 @@ namespace TimelineMe.ViewModels
             set
             {
                 cmpClikcedForPreview = value;
+            }
+        }
+
+        private RelayCommand cmpClikcedForSave;
+        public RelayCommand CMPClikcedForSave
+        {
+            get
+            {
+
+                cmpClikcedForSave = new RelayCommand(async
+                   () =>
+                {
+                    MediaGroup mediaGroupToSave = null;
+                    if (selectedCMPCollection.Count == 1)
+                    {
+                        mediaGroupToSave = selectedCMPCollection[0];
+                    }
+                    //await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
+                    //.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    //{
+                    //    App.ShellFrame.Navigate(typeof(PreviewCompostionPage), mediaGroupToSave);
+
+                    //});
+                    ContentGridVisibility = Visibility.Collapsed;
+                    ProBarVisibility = Visibility.Visible;
+                    MediaComposition mediaComposition;
+                    StorageFile cmpFile;
+                    cmpFile = await ApplicationData.Current.LocalFolder.GetFileAsync(mediaGroupToSave.CompostionFileName + ".cmp");
+                    mediaComposition = await MediaComposition.LoadAsync(cmpFile);
+
+                    var picker = new Windows.Storage.Pickers.FileSavePicker();
+                    picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.VideosLibrary;
+                    picker.FileTypeChoices.Add("MP4 files", new List<string>() { ".mp4" });
+                    picker.SuggestedFileName = "TimelineMe.mp4";
+
+                    StorageFile file = await picker.PickSaveFileAsync();
+                    if (file != null)
+                    {
+                        // Call RenderToFileAsync
+                        var saveOperation = mediaComposition.RenderToFileAsync(file, MediaTrimmingPreference.Precise);
+                    }
+                    ContentGridVisibility = Visibility.Visible;
+                    ProBarVisibility = Visibility.Collapsed;
+
+                });
+                return cmpClikcedForSave;
+            }
+            set
+            {
+                cmpClikcedForSave = value;
             }
         }
 
