@@ -34,7 +34,7 @@
             </ToggleSwitch>
             <StackPanel Margin="0,5,0,5">
                 <TextBlock Foreground="Black">Time for each image in seconds:</TextBlock>
-                <TextBox x:Name="TimeTxtBlck" Width="50" HorizontalAlignment="Left" Text="{Binding DurationInSec,Mode=TwoWay}"/>
+                <TextBox x:Name="TimeTxtBlck" Width="50" HorizontalAlignment="Left" Text="{x:Bind Vm.DurationInSec,Mode=TwoWay}" PlaceholderText="2"/>
 
             </StackPanel>
             

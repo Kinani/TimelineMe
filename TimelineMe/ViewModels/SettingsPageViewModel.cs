@@ -52,7 +52,7 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("EnableOxford");
             }
         }
-        private string durationInSec;
+        private string durationInSec = "2";
         public string DurationInSec
         {
             get
@@ -61,9 +61,14 @@ namespace TimelineMe.ViewModels
             }
             set
             {
-                durationInSec = value;
-                localSettings.Values["DurationInSecForEachImage"] = value;
-                RaisePropertyChanged("DurationInSec");
+                
+                if (value != null && value != string.Empty)
+                {
+                    durationInSec = value;
+                    localSettings.Values["DurationInSecForEachImage"] = int.Parse(value);
+                    RaisePropertyChanged("DurationInSec");
+
+                }
             }
         }
         private bool enableToast;
@@ -143,7 +148,7 @@ namespace TimelineMe.ViewModels
 
         #endregion
 
-       
+
         public SettingsPageViewModel()
         {
             NAdmin = new NotificationsAdmin();

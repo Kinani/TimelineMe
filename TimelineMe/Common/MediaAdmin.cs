@@ -105,7 +105,7 @@ namespace TimelineMe.Common
         }
 
 
-        public async Task MergeMedias(MediaGroup mg1, MediaGroup mg2)
+        public async Task MergeMediaGroups(MediaGroup mg1, MediaGroup mg2)
         {
             MediaComposition composition = new MediaComposition();
             MediaComposition composition2 = new MediaComposition();
@@ -340,6 +340,7 @@ namespace TimelineMe.Common
                 //TODO: make sure this works.
                 for (int i = 0; i < mediaFiles.Count; i++)
                 {
+                    // TODO Fix this
                     mediaClips.Add(await MediaClip.CreateFromImageFileAsync(mediaFiles[i], TimeSpan.FromSeconds(int.Parse(localSettings.Values["DurationInSecForEachImage"].ToString()))));
                     composition.Clips.Add(mediaClips[i]);
                 }

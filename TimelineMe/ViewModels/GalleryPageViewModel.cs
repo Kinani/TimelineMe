@@ -386,6 +386,10 @@ namespace TimelineMe.ViewModels
                             if (!MediaSelectedON)
                                 MergeEnable = false;
                         }
+                        if(selectedCMPCollection.Count >= 2 && !MediaSelectedON)
+                        {
+                            MergeEnable = true;
+                        }
 
                     });
                 return updateSelectedCMP;
@@ -590,13 +594,17 @@ namespace TimelineMe.ViewModels
         {
             ContentGridVisibility = Visibility.Collapsed;
             ProBarVisibility = Visibility.Visible;
-            if (selectedCMPCollection.Count == 1)
+            if (selectedCMPCollection.Count == 1 && selectedMediaCollection.Count >= 1)
             {
                 await mediaAdmin.MergeMedias(selectedMediaCollection, selectedCMPCollection[0]);
             }
-            else
+            else if(selectedCMPCollection.Count == 0 && selectedMediaCollection.Count >= 1)
             {
                 await mediaAdmin.MergeMedias(selectedMediaCollection);
+            }
+            else
+            {
+                await mediaAdmin.MergeMediaGroups(selectedCMPCollection[0], selectedCMPCollection[1]);
             }
             mediaAdmin.Initialize();
             MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
