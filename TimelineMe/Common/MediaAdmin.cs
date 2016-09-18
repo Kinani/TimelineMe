@@ -117,7 +117,8 @@ namespace TimelineMe.Common
             StorageFile timelineVidOutputFile;
             StorageFile timelineCMPOutputFile;
             StorageFile timelineCMPOutputFile2;
-            
+
+
 
             using (var db = new MediaContext())
             {
@@ -161,15 +162,33 @@ namespace TimelineMe.Common
             timelineVidOutputFile = await localFolder.GetFileAsync(mg1.CompostionFileName + ".mp4");
             timelineCMPOutputFile = await localFolder.GetFileAsync(mg1.CompostionFileName + ".cmp");
             timelineCMPOutputFile2 = await localFolder.GetFileAsync(mg2.CompostionFileName + ".cmp");
+
             composition = await MediaComposition.LoadAsync(timelineCMPOutputFile);
             composition2 = await MediaComposition.LoadAsync(timelineCMPOutputFile2);
 
+            int count = composition2.Clips.Count;
+            //List<MediaClip> clips = composition2.Clips.ToList();
             //TODO: Warn user to select the oldest first.
 
-            for (int i = 0; i < composition2.Clips.Count; i++)
+            //for (int i = 0; i < count; i++)
+            //{
+                try
             {
-                composition.Clips.Add(composition2.Clips[i]);
+                foreach (var clip in composition2.Clips)
+                {
+                    composition.Clips.Add(clip);
+                }
+                //composition.Clips.Add(composition2.Clips[i]);
+                StorageFile temp = await localFolder.CreateFileAsync(timelineCMPOutputFile.Name, CreationCollisionOption.ReplaceExisting);
+                await composition.SaveAsync(temp);
+                int x = composition.Clips.Count;
             }
+            catch (Exception ex)
+            {
+
+            }
+
+            //}
 
             var action = composition.SaveAsync(timelineCMPOutputFile);
             action.Completed = (info, status) =>
