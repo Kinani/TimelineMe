@@ -27,11 +27,19 @@ namespace TimelineMe.ViewModels
             }
             set
             {
-                reminderDueTime = value;
-                DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(value);
-                localSettings.Values["ToastDueTime"] = alarmDate.ToString();
-                localSettings.Values["DueTimeSpanOnly"] = value.ToString(@"hh\:mm\:ss");
-                RaisePropertyChanged("ReminderDueTime");
+                try
+                {
+                    reminderDueTime = value;
+                    DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(value);
+                    localSettings.Values["ToastDueTime"] = alarmDate.ToString();
+                    localSettings.Values["DueTimeSpanOnly"] = value.ToString(@"hh\:mm\:ss");
+                    RaisePropertyChanged("ReminderDueTime");
+                }
+                catch (Exception)
+                {
+
+                    
+                }
             }
         }
         private bool enableOxford;
@@ -43,13 +51,21 @@ namespace TimelineMe.ViewModels
             }
             set
             {
-                enableOxford = value;
-                if (value)
-                    localSettings.Values["EnableOxford"] = true;
-                else
-                    localSettings.Values["EnableOxford"] = false;
+                try
+                {
+                    enableOxford = value;
+                    if (value)
+                        localSettings.Values["EnableOxford"] = true;
+                    else
+                        localSettings.Values["EnableOxford"] = false;
 
-                RaisePropertyChanged("EnableOxford");
+                    RaisePropertyChanged("EnableOxford");
+                }
+                catch (Exception)
+                {
+
+                    
+                }
             }
         }
         private string durationInSec = "2";
@@ -61,13 +77,21 @@ namespace TimelineMe.ViewModels
             }
             set
             {
-                
-                if (value != null && value != string.Empty)
-                {
-                    durationInSec = value;
-                    localSettings.Values["DurationInSecForEachImage"] = int.Parse(value);
-                    RaisePropertyChanged("DurationInSec");
 
+                try
+                {
+                    if (value != null && value != string.Empty)
+                    {
+                        durationInSec = value;
+                        localSettings.Values["DurationInSecForEachImage"] = int.Parse(value);
+                        RaisePropertyChanged("DurationInSec");
+
+                    }
+                }
+                catch (Exception)
+                {
+
+                    
                 }
             }
         }
@@ -80,12 +104,20 @@ namespace TimelineMe.ViewModels
             }
             set
             {
-                enableToast = value;
-                if (value)
-                    localSettings.Values["EnableToast"] = true;
-                else
-                    localSettings.Values["EnableToast"] = false;
-                RaisePropertyChanged("EnableToast");
+                try
+                {
+                    enableToast = value;
+                    if (value)
+                        localSettings.Values["EnableToast"] = true;
+                    else
+                        localSettings.Values["EnableToast"] = false;
+                    RaisePropertyChanged("EnableToast");
+                }
+                catch (Exception)
+                {
+
+                    
+                }
             }
         }
         private bool isAlarmTimePickerOn = true;
@@ -109,12 +141,20 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                oxfordToggled = new RelayCommand<object>(tgle =>
+                try
                 {
-                    RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
-                    ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
-                    EnableOxford = tglesw.IsOn;
-                });
+                    oxfordToggled = new RelayCommand<object>(tgle =>
+                            {
+                                RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
+                                ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
+                                EnableOxford = tglesw.IsOn;
+                            });
+                }
+                catch (Exception)
+                {
+
+                    
+                }
                 return oxfordToggled;
             }
             set
@@ -127,16 +167,24 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                toastToggled = new RelayCommand<object>(tgle =>
+                try
                 {
-                    RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
-                    ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
-                    EnableToast = tglesw.IsOn;
-                    if (EnableToast)
-                        IsAlarmTimePickerOn = true;
-                    else
-                        IsAlarmTimePickerOn = false;
-                });
+                    toastToggled = new RelayCommand<object>(tgle =>
+                            {
+                                RoutedEventArgs eventArgs = tgle as RoutedEventArgs;
+                                ToggleSwitch tglesw = eventArgs.OriginalSource as ToggleSwitch;
+                                EnableToast = tglesw.IsOn;
+                                if (EnableToast)
+                                    IsAlarmTimePickerOn = true;
+                                else
+                                    IsAlarmTimePickerOn = false;
+                            });
+                }
+                catch (Exception)
+                {
+
+                    
+                }
                 return toastToggled;
             }
             set
@@ -151,17 +199,25 @@ namespace TimelineMe.ViewModels
 
         public SettingsPageViewModel()
         {
-            NAdmin = new NotificationsAdmin();
-            if (localSettings.Values.ContainsKey("SettingsLoaded"))
+            try
             {
-                EnableOxford = (bool)localSettings.Values["EnableOxford"];
-                EnableToast = (bool)localSettings.Values["EnableToast"];
-                IsAlarmTimePickerOn = (bool)localSettings.Values["EnableToast"];
-                DurationInSec = localSettings.Values["DurationInSecForEachImage"] as string;
-                TimeSpan temp = new TimeSpan();
-                string x = (string)localSettings.Values["DueTimeSpanOnly"];
-                TimeSpan.TryParse(x, out temp);
-                ReminderDueTime = temp;
+                NAdmin = new NotificationsAdmin();
+                if (localSettings.Values.ContainsKey("SettingsLoaded"))
+                {
+                    EnableOxford = (bool)localSettings.Values["EnableOxford"];
+                    EnableToast = (bool)localSettings.Values["EnableToast"];
+                    IsAlarmTimePickerOn = (bool)localSettings.Values["EnableToast"];
+                    DurationInSec = localSettings.Values["DurationInSecForEachImage"] as string;
+                    TimeSpan temp = new TimeSpan();
+                    string x = (string)localSettings.Values["DueTimeSpanOnly"];
+                    TimeSpan.TryParse(x, out temp);
+                    ReminderDueTime = temp;
+                }
+            }
+            catch (Exception)
+            {
+
+                
             }
         }
     }

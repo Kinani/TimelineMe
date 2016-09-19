@@ -30,7 +30,7 @@ namespace TimelineMe
         public static Frame ShellFrame;
         public static NotificationsAdmin NAdmin;
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public static string defToastTime = "07:00 AM";
+        
         public App()
         {
             this.InitializeComponent();
@@ -45,47 +45,58 @@ namespace TimelineMe
 
         private void FirstRunOnly()
         {
-            if (localSettings.Values.ContainsKey("SettingsLoaded"))
+            try
+            {
+                if (localSettings.Values.ContainsKey("SettingsLoaded"))
+                {
+
+                    DateTime dueTime = new DateTime();
+                    DateTime.TryParse((string)localSettings.Values["ToastDueTime"], out dueTime);
+                    NAdmin.SendAlarmToast(true, dueTime);
+                }
+                else
+                {
+                    localSettings.Values["SettingsLoaded"] = true;
+                    localSettings.Values["EnableOxford"] = true;
+                    localSettings.Values["EnableToast"] = true;
+                    localSettings.Values["DurationInSecForEachImage"] = 2;
+                    localSettings.Values["ToastSentToday"] = false;
+                    localSettings.Values["LastImageName"] = "";
+                    TimeSpan temp = new TimeSpan(01, 00, 00);
+                    DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(temp);
+                    localSettings.Values["ToastDueTime"] = alarmDate.ToString();
+                    localSettings.Values["DueTimeSpanOnly"] = string.Format(@"{0:hh\:mm\:ss}", temp);
+                }
+            }
+            catch (Exception)
             {
 
-                DateTime dueTime = new DateTime();
-                DateTime.TryParse((string)localSettings.Values["ToastDueTime"], out dueTime);
-                NAdmin.SendAlarmToast(true, dueTime);
-            }
-            else
-            {
-                localSettings.Values["SettingsLoaded"] = true;
-                localSettings.Values["EnableOxford"] = true;
-                localSettings.Values["EnableToast"] = true;
-                localSettings.Values["DurationInSecForEachImage"] = 2;
-                localSettings.Values["ToastSentToday"] = false;
-                localSettings.Values["LastImageName"] = "";
-                TimeSpan temp = new TimeSpan(01, 00, 00);
-                //TimeSpan.TryParse(defToastTime, out temp);
-                DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(temp);
-                localSettings.Values["ToastDueTime"] = alarmDate.ToString();
-                localSettings.Values["DueTimeSpanOnly"] = string.Format(@"{0:hh\:mm\:ss}", temp);
-                //localSettings.Values["DueTimeSpanOnly"] = temp.ToString(@"h:mm tt");
+                
             }
         }
         private void AdjustScreenMode()
         {
-            //DetermineCurrentDeviceType();
-            bool isPhone = ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
-            ApplicationView view = ApplicationView.GetForCurrentView();
-            if (!isPhone)
+            try
             {
-                if (view.IsFullScreenMode)
-                    view.ExitFullScreenMode();
+                bool isPhone = ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1);
+                ApplicationView view = ApplicationView.GetForCurrentView();
+                if (!isPhone)
+                {
+                    if (view.IsFullScreenMode)
+                        view.ExitFullScreenMode();
 
 
+                }
+                else
+                {
+                    ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+                }
             }
-            else
+            catch (Exception)
             {
-                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+
+                
             }
-
-
         }
 
         protected override void OnActivated(IActivatedEventArgs e)
@@ -188,13 +199,4 @@ namespace TimelineMe
             deferral.Complete();
         }
     }
-    public enum Device
-    {
-        Phone,
-        Tablet,
-        Desktop,
-        Xbox,
-        Iot,
-        Continuum
-    };
 }

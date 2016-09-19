@@ -35,29 +35,53 @@ namespace TimelineMe.Views
 
         public PreviewCompostionPage()
         {
-            this.InitializeComponent();
-            mediaComposition = new MediaComposition();
+            try
+            {
+                this.InitializeComponent();
+                mediaComposition = new MediaComposition();
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            var currentView = SystemNavigationManager.GetForCurrentView();
+            try
+            {
+                base.OnNavigatedTo(e);
+                var currentView = SystemNavigationManager.GetForCurrentView();
 
-            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            currentView.BackRequested += backButton_Tapped;
-            mediaGroup = e.Parameter as MediaGroup;
-            await UpdateMediaElementSource();
+                currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                currentView.BackRequested += backButton_Tapped;
+                mediaGroup = e.Parameter as MediaGroup;
+                await UpdateMediaElementSource();
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
         public async Task UpdateMediaElementSource()
         {
-            cmpFile = await ApplicationData.Current.LocalFolder.GetFileAsync(mediaGroup.CompostionFileName + ".cmp");
-            mediaComposition = await MediaComposition.LoadAsync(cmpFile);
+            try
+            {
+                cmpFile = await ApplicationData.Current.LocalFolder.GetFileAsync(mediaGroup.CompostionFileName + ".cmp");
+                mediaComposition = await MediaComposition.LoadAsync(cmpFile);
 
-            mediaStreamSource = mediaComposition.GeneratePreviewMediaStreamSource(
-                (int)mediaElement.ActualWidth,
-                (int)mediaElement.ActualHeight);
+                mediaStreamSource = mediaComposition.GeneratePreviewMediaStreamSource(
+                    (int)mediaElement.ActualWidth,
+                    (int)mediaElement.ActualHeight);
 
-            mediaElement.SetMediaStreamSource(mediaStreamSource);
+                mediaElement.SetMediaStreamSource(mediaStreamSource);
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
         private void backButton_Tapped(object sender, BackRequestedEventArgs e)
         {

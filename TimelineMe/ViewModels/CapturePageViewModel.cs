@@ -102,14 +102,22 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                if (openCamera == null)
+                try
                 {
-                    openCamera = new RelayCommand(async () =>
+                    if (openCamera == null)
                     {
-                        EnableCapture = false;
-                        await OpenCameraUI();
-                        EnableCapture = true;
-                    });
+                        openCamera = new RelayCommand(async () =>
+                        {
+                            EnableCapture = false;
+                            await OpenCameraUI();
+                            EnableCapture = true;
+                        });
+                    }
+                }
+                catch (Exception)
+                {
+
+                    
                 }
                 return openCamera;
             }
@@ -122,9 +130,17 @@ namespace TimelineMe.ViewModels
 
         public CapturePageViewModel()
         {
-            mediaAdmin = new MediaAdmin();
-            ProBarVisibility = Visibility.Collapsed;
-            YouLastTime = string.Format("ms-appdata:///local/{0}", (string)localSettings.Values["LastImageName"]);
+            try
+            {
+                mediaAdmin = new MediaAdmin();
+                ProBarVisibility = Visibility.Collapsed;
+                YouLastTime = string.Format("ms-appdata:///local/{0}", (string)localSettings.Values["LastImageName"]);
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
         public async Task OpenCameraUI()
         {
@@ -147,12 +163,20 @@ namespace TimelineMe.ViewModels
 
         private async Task AddImage(StorageFile image)
         {
-            bool finished;
-            ProBarVisibility = Visibility.Visible;
-            StatusString = "Some AI spells is being casted, Please wait.";
-            finished = await mediaAdmin.AddMedia(image);
-            ProBarVisibility = Visibility.Collapsed;
-            StatusString = "Done! Thank you friend. you may procced to the Gallery.";
+            try
+            {
+                bool finished;
+                ProBarVisibility = Visibility.Visible;
+                StatusString = "Some AI spells is being casted, Please wait.";
+                finished = await mediaAdmin.AddMedia(image);
+                ProBarVisibility = Visibility.Collapsed;
+                StatusString = "Done! Thank you friend. you may procced to the Gallery.";
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
     }
 }

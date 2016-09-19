@@ -35,24 +35,5 @@ namespace TimelineMe.Views
         {
             this.InitializeComponent();
         }
-
-      
-
-        private void TimelineListView_ItemClick(object sender, ItemClickEventArgs e)
-        {   
-            (e.ClickedItem as MediaElement).TransportControls.IsEnabled = true;
-            (e.ClickedItem as MediaElement).IsFullWindow = true;
-        }
-
-        private void BitmapImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            Debug.WriteLine(e.ErrorMessage);
-        }
-
-        private void BitmapImage_ImageOpened(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine(e.OriginalSource);
-
-        }
     }
 }

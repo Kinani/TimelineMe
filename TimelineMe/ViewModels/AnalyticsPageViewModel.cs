@@ -65,12 +65,19 @@ namespace TimelineMe.ViewModels
         {
             get
             {
-                
-                   updateSelectedCMP = new RelayCommand<IList<object>>(
+                try
+                {
+                    updateSelectedCMP = new RelayCommand<IList<object>>(
                        selectedCMP =>
                        {
                            SelectedMediaGroup = new ObservableCollection<MediaGroup>(selectedCMP.Cast<MediaGroup>().ToList());
                        });
+                }
+                catch(Exception)
+                {
+
+                }
+                   
                 return updateSelectedCMP;
             }
             set
@@ -88,13 +95,21 @@ namespace TimelineMe.ViewModels
             get
             {
 
-                analyticsPageLoaded = new RelayCommand(() =>
+                try
                 {
-                    mediaAdmin.Initialize();
-                    MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
-                    MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
+                    analyticsPageLoaded = new RelayCommand(() =>
+                            {
+                                mediaAdmin.Initialize();
+                                MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+                                MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
 
-                });
+                            });
+                }
+                catch (Exception)
+                {
+
+                    
+                }
 
                 return analyticsPageLoaded;
             }
@@ -106,8 +121,16 @@ namespace TimelineMe.ViewModels
         #endregion
         public AnalyticsPageViewModel()
         {
-            mediaAdmin = new MediaAdmin();
-            SelectedMediaGroup = new ObservableCollection<MediaGroup>();
+            try
+            {
+                mediaAdmin = new MediaAdmin();
+                SelectedMediaGroup = new ObservableCollection<MediaGroup>();
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
     }
 }

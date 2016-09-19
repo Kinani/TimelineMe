@@ -30,12 +30,20 @@ namespace TimelineMe.Views
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            var currentView = SystemNavigationManager.GetForCurrentView();
+            try
+            {
+                base.OnNavigatedTo(e);
+                var currentView = SystemNavigationManager.GetForCurrentView();
 
-            currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            currentView.BackRequested += backButton_Tapped;
-            BitMapImage.UriSource = new Uri(string.Format("ms-appdata:///local/{0}", (e.Parameter as Media).MediaName));
+                currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                currentView.BackRequested += backButton_Tapped;
+                BitMapImage.UriSource = new Uri(string.Format("ms-appdata:///local/{0}", (e.Parameter as Media).MediaName));
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
 
         private void backButton_Tapped(object sender, BackRequestedEventArgs e)
