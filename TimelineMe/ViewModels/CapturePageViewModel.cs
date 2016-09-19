@@ -17,7 +17,7 @@ namespace TimelineMe.ViewModels
     public class CapturePageViewModel : ViewModelBase
     {
         private MediaAdmin mediaAdmin;
-
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
         #region Properties    
 
@@ -124,6 +124,7 @@ namespace TimelineMe.ViewModels
         {
             mediaAdmin = new MediaAdmin();
             ProBarVisibility = Visibility.Collapsed;
+            YouLastTime = string.Format("ms-appdata:///local/{0}", (string)localSettings.Values["LastImageName"]);
         }
         public async Task OpenCameraUI()
         {
@@ -152,16 +153,6 @@ namespace TimelineMe.ViewModels
             finished = await mediaAdmin.AddMedia(image);
             ProBarVisibility = Visibility.Collapsed;
             StatusString = "Done! Thank you friend. you may procced to the Gallery.";
-        }
-
-        private async Task RemoveImage(StorageFile image)
-        {
-            await mediaAdmin.RemoveMedia(image);
-        }
-
-        private void MergeCapturedImage()
-        {
-            // TODO
         }
     }
 }

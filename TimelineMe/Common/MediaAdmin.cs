@@ -83,6 +83,7 @@ namespace TimelineMe.Common
 
             newMedia.IsMerged = false;
             newMedia.MediaName = media.Name;
+            localSettings.Values["LastImageName"] = media.Name;
             newMedia.CaptureDate = media.DateCreated.DateTime;
             using (var db = new MediaContext())
             {

@@ -59,6 +59,7 @@ namespace TimelineMe
                 localSettings.Values["EnableToast"] = true;
                 localSettings.Values["DurationInSecForEachImage"] = 2;
                 localSettings.Values["ToastSentToday"] = false;
+                localSettings.Values["LastImageName"] = "";
                 TimeSpan temp = new TimeSpan(01, 00, 00);
                 //TimeSpan.TryParse(defToastTime, out temp);
                 DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(temp);

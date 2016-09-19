@@ -10,14 +10,15 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="ms-appdata:///local/CCapture.jpg"></ImageBrush>
+            <!--<ImageBrush ImageSource="ms-appdata:///local/CCapture.jpg"></ImageBrush>-->
+            <ImageBrush Opacity="0.9" ImageSource="{Binding YouLastTime}"></ImageBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Background="AliceBlue" Opacity="1" IsEnabled="{Binding EnableCapture}">
+            <Button x:Name="OpenCameraApp" Opacity="0.7" Foreground="Black" Command="{Binding OpenCamera}" Background="AliceBlue" IsEnabled="{Binding EnableCapture}">
                 <Button.Content>
                     <TextBlock Text="Can't wait to see you today! Click me?" TextWrapping="Wrap"/>
                 </Button.Content>
