@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TimelineMe.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,6 +34,16 @@ namespace TimelineMe.Views
         public AnalyticsPage()
         {
             this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
+        }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
         }
     }
 }

@@ -64,7 +64,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <my:SfChart Header="Emotions Chart" Grid.Row="2">
+        <my:SfChart Header="Emotions Chart" Grid.Row="2" Height="auto" Width="auto">
             <my:SfChart.PrimaryAxis>
                 <my:CategoryAxis Header="Emotions" FontSize="12"/>
             </my:SfChart.PrimaryAxis>
