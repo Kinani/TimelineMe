@@ -28,6 +28,7 @@ namespace TimelineMe
     sealed partial class App : Application
     {
         public static Frame ShellFrame;
+        public static NotificationsAdmin NAdmin;
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static string defToastTime = "07:00 AM";
         public App()
@@ -38,14 +39,18 @@ namespace TimelineMe
             {
                 db.Database.Migrate();
             }
+            NAdmin = new NotificationsAdmin();
             FirstRunOnly();
         }
 
         private void FirstRunOnly()
         {
-            if(localSettings.Values.ContainsKey("SettingsLoaded"))
+            if (localSettings.Values.ContainsKey("SettingsLoaded"))
             {
-                return;
+
+                DateTime dueTime = new DateTime();
+                DateTime.TryParse((string)localSettings.Values["ToastDueTime"], out dueTime);
+                NAdmin.SendAlarmToast(true, dueTime);
             }
             else
             {
@@ -54,7 +59,7 @@ namespace TimelineMe
                 localSettings.Values["EnableToast"] = true;
                 localSettings.Values["DurationInSecForEachImage"] = 2;
                 localSettings.Values["ToastSentToday"] = false;
-                TimeSpan temp = new TimeSpan(07,00,00);
+                TimeSpan temp = new TimeSpan(01, 00, 00);
                 //TimeSpan.TryParse(defToastTime, out temp);
                 DateTime alarmDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).Add(temp);
                 localSettings.Values["ToastDueTime"] = alarmDate.ToString();
@@ -84,7 +89,7 @@ namespace TimelineMe
 
         protected override void OnActivated(IActivatedEventArgs e)
         {
-           
+
             // Get the root frame
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -92,7 +97,7 @@ namespace TimelineMe
             {
                 rootFrame = new Frame();
                 rootFrame.NavigationFailed += OnNavigationFailed;
-                
+
                 Window.Current.Content = rootFrame;
             }
 

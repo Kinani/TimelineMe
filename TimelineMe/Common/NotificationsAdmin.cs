@@ -63,9 +63,15 @@ namespace TimelineMe.Common
                         { "action","CapturePage" }
                     }.ToString()
                 };
-                ToastNotificationManager.History.Clear();
-                ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), timeOffset);
-                ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
+                try
+                {
+                    ToastNotificationManager.History.Clear();
+                    ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), timeOffset);
+                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
+                }
+                catch
+                { }
+                
             }
             else
             {
@@ -115,9 +121,18 @@ namespace TimelineMe.Common
                         { "action","CapturePage" }
                     }.ToString()
                 };
-                ToastNotificationManager.History.Clear();
-                ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), timeOffset);
-                ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
+                
+                try
+                {
+                    ToastNotificationManager.History.Clear();
+                    ScheduledToastNotification toast = new ScheduledToastNotification(toastContent.GetXml(), timeOffset);
+                    ToastNotificationManager.CreateToastNotifier().AddToSchedule(toast);
+                }
+                catch
+                {
+
+                   
+                }
             };
             
         }
