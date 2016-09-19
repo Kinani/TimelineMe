@@ -145,7 +145,7 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("PreviewEnable");
             }
         }
-        private bool mergeEnable;
+        private bool mergeEnable; // TODO feature. [Merge two CMPs]
 
         public bool MergeEnable
         {
@@ -386,10 +386,11 @@ namespace TimelineMe.ViewModels
                             if (!MediaSelectedON)
                                 MergeEnable = false;
                         }
-                        if(selectedCMPCollection.Count >= 2 && !MediaSelectedON)
-                        {
-                            MergeEnable = true;
-                        }
+                        // TODO
+                        //if(selectedCMPCollection.Count >= 2 && !MediaSelectedON)
+                        //{
+                        //    MergeEnable = true;
+                        //}
 
                     });
                 return updateSelectedCMP;
@@ -602,10 +603,11 @@ namespace TimelineMe.ViewModels
             {
                 await mediaAdmin.MergeMedias(selectedMediaCollection);
             }
-            else
-            {
-                await mediaAdmin.MergeMediaGroups(selectedCMPCollection[0], selectedCMPCollection[1]);
-            }
+            // TODO feature.
+            //else
+            //{
+            //    await mediaAdmin.MergeMediaGroups(selectedCMPCollection[0], selectedCMPCollection[1]);
+            //}
             mediaAdmin.Initialize();
             MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
             MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
