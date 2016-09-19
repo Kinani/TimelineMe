@@ -28,18 +28,5 @@ namespace TimelineMe.Views
         {
             this.InitializeComponent();
         }
-
-        private async void OpenCameraApp_Click(object sender, RoutedEventArgs e)
-        {
-            CameraCaptureUI captureUI = new CameraCaptureUI();
-            captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Jpeg;
-            captureUI.PhotoSettings.CroppedSizeInPixels = new Size(200, 200);
-
-            StorageFile photo = await captureUI.CaptureFileAsync(CameraCaptureUIMode.Photo);
-            if (photo != null)
-            {
-                
-            }
-        }
     }
 }

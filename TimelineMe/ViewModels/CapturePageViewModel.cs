@@ -79,6 +79,20 @@ namespace TimelineMe.ViewModels
                 RaisePropertyChanged("YouLastTime");
             }
         }
+
+        private bool enableCapture = true;
+        public bool EnableCapture
+        {
+            get
+            {
+                return enableCapture;
+            }
+            set
+            {
+                enableCapture = value;
+                RaisePropertyChanged("EnableCapture");
+            }
+        }
         #endregion
 
         #region Commands
@@ -92,7 +106,9 @@ namespace TimelineMe.ViewModels
                 {
                     openCamera = new RelayCommand(async () =>
                     {
+                        EnableCapture = false;
                         await OpenCameraUI();
+                        EnableCapture = true;
                     });
                 }
                 return openCamera;

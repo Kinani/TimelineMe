@@ -17,7 +17,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Background="AliceBlue" Opacity="1">
+            <Button x:Name="OpenCameraApp" Foreground="Black" Command="{Binding OpenCamera}" Background="AliceBlue" Opacity="1" IsEnabled="{Binding EnableCapture}">
                 <Button.Content>
                     <TextBlock Text="Can't wait to see you today! Click me?" TextWrapping="Wrap"/>
                 </Button.Content>
