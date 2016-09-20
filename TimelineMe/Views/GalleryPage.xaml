@@ -30,7 +30,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Margin="3,0,0,0" FontSize="20" Text="{Binding TextBlockHeader}" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}"/>
-                <AutoSuggestBox x:Name="asb" Grid.Column="1" MinWidth="296"  HorizontalAlignment="Right" 
+                <AutoSuggestBox x:Name="asb" Grid.Column="1" MinWidth="130" MaxWidth="170" HorizontalAlignment="Right" 
                         PlaceholderText="Search by tag"
                         QueryIcon="Find">
                     <interactivity:Interaction.Behaviors>
@@ -176,6 +176,8 @@
                 </ListView>
             </Grid>
             <CommandBar Grid.Row="3" ClosedDisplayMode="Compact" FlowDirection="LeftToRight" Background="White">
+                <AppBarButton x:Name="DeleteMedia" Icon="Delete" Label="Delete Item" Command="{x:Bind Vm.DeleteMedia}" IsEnabled="{Binding DeleteEnable}"/>
+                <AppBarSeparator></AppBarSeparator>
                 <AppBarButton x:Name="MergeImagesAppBrBtn" Icon="Trim" Label="Merge" Command="{x:Bind Vm.MergeSelectedImages}" IsEnabled="{Binding MergeEnable}"/>
                 <AppBarButton x:Name="FullScreenAppBrBtn" Icon="FullScreen" Label="View Selected Media" IsEnabled="{Binding PreviewEnable}">
                     <interactivity:Interaction.Behaviors>

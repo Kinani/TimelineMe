@@ -227,6 +227,20 @@ namespace TimelineMe.ViewModels
             }
         }
 
+        private bool deleteEnable = false;
+        public bool DeleteEnable
+        {
+            get
+            {
+                return deleteEnable;
+            }
+            set
+            {
+                deleteEnable = value;
+                RaisePropertyChanged("DeleteEnable");
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -267,7 +281,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
 
                 return asbQuerySubmitted;
@@ -295,7 +309,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return finishedSearching;
             }
@@ -323,7 +337,7 @@ namespace TimelineMe.ViewModels
                                 MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
                                 MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
                                 selectedCMPCollection = new List<MediaGroup>();//TODO Check this.
-                    MediaSelectedON = false;
+                                MediaSelectedON = false;
                                 MediaGroupSelectedON = false;
                                 TextBlockHeader = "Images captured:";
                                 SearchResultGridVisibility = Visibility.Collapsed;
@@ -334,7 +348,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
 
                 return galleryPageLoaded;
@@ -366,10 +380,11 @@ namespace TimelineMe.ViewModels
                                         PreviewEnable = false;
                                         MergeEnable = true;
                                     }
-                        // TODO
-                        if (selectedMediaCollection.Count >= 1)
+                                    // TODO
+                                    if (selectedMediaCollection.Count >= 1)
                                     {
                                         MediaSelectedON = true;
+                                        DeleteEnable = true;
                                         if (MediaGroupSelectedON)
                                             MergeEnable = true;
                                     }
@@ -377,13 +392,14 @@ namespace TimelineMe.ViewModels
                                     {
                                         MediaSelectedON = false;
                                         MergeEnable = false;
+                                        DeleteEnable = false;
                                     }
                                 });
                 }
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return updateSelectedImages;
             }
@@ -407,7 +423,7 @@ namespace TimelineMe.ViewModels
                                     if (selectedCMPCollection.Count == 1)
                                     {
                                         CMPPreview = true;
-
+                                        DeleteEnable = true;
                                         MediaGroupSelectedON = true;
                                         if (MediaSelectedON)
                                             MergeEnable = true;
@@ -415,23 +431,23 @@ namespace TimelineMe.ViewModels
                                     else
                                     {
                                         CMPPreview = false;
-
+                                        DeleteEnable = false;
                                         MediaGroupSelectedON = false;
                                         if (!MediaSelectedON)
                                             MergeEnable = false;
                                     }
-                        // TODO
-                        //if(selectedCMPCollection.Count >= 2 && !MediaSelectedON)
-                        //{
-                        //    MergeEnable = true;
-                        //}
+                                    // TODO
+                                    //if(selectedCMPCollection.Count >= 2 && !MediaSelectedON)
+                                    //{
+                                    //    MergeEnable = true;
+                                    //}
 
-                    });
+                                });
                 }
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return updateSelectedCMP;
             }
@@ -455,7 +471,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return mergeSelectedImages;
             }
@@ -492,7 +508,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return mediaClikcedForPreview;
             }
@@ -530,7 +546,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return cmpClikcedForPreview;
             }
@@ -556,13 +572,13 @@ namespace TimelineMe.ViewModels
                                 {
                                     mediaGroupToSave = selectedCMPCollection[0];
                                 }
-                    //await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
-                    //.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    //{
-                    //    App.ShellFrame.Navigate(typeof(PreviewCompostionPage), mediaGroupToSave);
+                                //await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
+                                //.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                                //{
+                                //    App.ShellFrame.Navigate(typeof(PreviewCompostionPage), mediaGroupToSave);
 
-                    //});
-                    ContentGridVisibility = Visibility.Collapsed;
+                                //});
+                                ContentGridVisibility = Visibility.Collapsed;
                                 ProBarVisibility = Visibility.Visible;
                                 MediaComposition mediaComposition;
                                 StorageFile cmpFile;
@@ -577,8 +593,8 @@ namespace TimelineMe.ViewModels
                                 StorageFile file = await picker.PickSaveFileAsync();
                                 if (file != null)
                                 {
-                        // Call RenderToFileAsync
-                        var saveOperation = mediaComposition.RenderToFileAsync(file, MediaTrimmingPreference.Precise);
+                                    // Call RenderToFileAsync
+                                    var saveOperation = mediaComposition.RenderToFileAsync(file, MediaTrimmingPreference.Precise);
                                 }
                                 ContentGridVisibility = Visibility.Visible;
                                 ProBarVisibility = Visibility.Collapsed;
@@ -588,7 +604,7 @@ namespace TimelineMe.ViewModels
                 catch (Exception)
                 {
 
-                    
+
                 }
                 return cmpClikcedForSave;
             }
@@ -597,7 +613,69 @@ namespace TimelineMe.ViewModels
                 cmpClikcedForSave = value;
             }
         }
+        private RelayCommand deleteMedia;
+        public RelayCommand DeleteMedia
+        {
+            get
+            {
+                try
+                {
+                    deleteMedia = new RelayCommand(async () =>
+                    {
+                        if (DeleteEnable)
+                        {
+                            IUICommand result;
+                            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher
+                                         .RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                                         {
+                                             var dialog = new MessageDialog("Delete selected item(s)?");
+                                             dialog.Commands.Add(new UICommand("Yes") { Id = 0 });
+                                             dialog.Commands.Add(new UICommand("No") { Id = 1 });
+                                             dialog.DefaultCommandIndex = 0;
+                                             dialog.CancelCommandIndex = 1;
+                                             result = await dialog.ShowAsync();
+                                             if (result.Label == "Yes")
+                                             {
+                                                 ContentGridVisibility = Visibility.Collapsed;
+                                                 ProBarVisibility = Visibility.Visible;
+                                                 if (selectedMediaCollection.Count > 0)
+                                                 {
+                                                     foreach (Media item in selectedMediaCollection)
+                                                     {
+                                                         await mediaAdmin.RemoveMedia(item);
+                                                     }
+                                                 }
+                                                 if (selectedCMPCollection.Count > 0)
+                                                 {
+                                                     foreach (MediaGroup item in selectedCMPCollection)
+                                                     {
+                                                         await mediaAdmin.RemoveMedia(item);
+                                                     }
+                                                 }
+                                                 mediaAdmin.Initialize();
+                                                 MediaCollection = new ObservableCollection<Media>(mediaAdmin.MediaList);
+                                                 MediaGroupCollection = new ObservableCollection<MediaGroup>(mediaAdmin.MediaGroupList);
+                                                 ContentGridVisibility = Visibility.Visible;
+                                                 ProBarVisibility = Visibility.Collapsed;
+                                             }
+                                         });
+                        }
 
+                    });
+                }
+                catch (Exception)
+                {
+
+
+                }
+                return deleteMedia;
+            }
+            set
+            {
+                deleteMedia = value;
+            }
+
+        }
         #endregion
         public GalleryPageViewModel()
         {
@@ -608,7 +686,7 @@ namespace TimelineMe.ViewModels
             catch (Exception)
             {
 
-                
+
             }
 
         }
@@ -672,7 +750,7 @@ namespace TimelineMe.ViewModels
             catch (Exception)
             {
 
-                
+
             }
         }
 
@@ -682,10 +760,10 @@ namespace TimelineMe.ViewModels
             await mediaAdmin.AddMedia(image);
         }
 
-        private async Task RemoveImage(StorageFile image)
-        {
-            await mediaAdmin.RemoveMedia(image);
-        }
+        //private async Task RemoveImage(StorageFile image)
+        //{
+        //    await mediaAdmin.RemoveMedia(image);
+        //}
 
         private async Task MergeImages()
         {
@@ -713,11 +791,20 @@ namespace TimelineMe.ViewModels
             catch (Exception)
             {
 
-                
+
             }
 
             ContentGridVisibility = Visibility.Visible;
             ProBarVisibility = Visibility.Collapsed;
+        }
+
+        public void CleanGalleryUI()
+        {
+            PreviewEnable = false;
+            MergeEnable = false;
+            CMPPreview = false;
+            DeleteEnable = false;
+
         }
 
 

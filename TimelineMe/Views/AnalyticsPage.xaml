@@ -27,7 +27,7 @@
                 <core:InvokeCommandAction Command="{x:Bind Vm.AnalyticsPageLoaded}"/>
             </core:EventTriggerBehavior>
         </interactivity:Interaction.Behaviors>
-        <TextBlock FontSize="20" Margin="0,5,0,0">Please select a TimelineMe output to plot the chart.</TextBlock>
+        <TextBlock FontSize="20" Margin="0,5,0,0" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}">Please select a TimelineMe output to plot the chart.</TextBlock>
         <ListView x:Name="TimelineListView" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollMode="Enabled"
@@ -64,18 +64,29 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <my:SfChart Header="Emotions Chart" Grid.Row="2" Height="auto" Width="auto">
+        <my:SfChart Grid.Row="2" Height="auto" Width="auto" Foreground="Black">
+            <my:SfChart.Header>
+                <TextBlock Foreground="Black">Emotions Chart</TextBlock>
+            </my:SfChart.Header>
             <my:SfChart.PrimaryAxis>
-                <my:CategoryAxis Header="Emotions" FontSize="12"/>
+                <my:CategoryAxis FontSize="12">
+                    <my:CategoryAxis.Header>
+                        <TextBlock Foreground="Black">Emotions</TextBlock>
+                    </my:CategoryAxis.Header>
+                </my:CategoryAxis>
             </my:SfChart.PrimaryAxis>
             <my:SfChart.SecondaryAxis>
-                <my:NumericalAxis Header="Scores" FontSize="12"/>
+                <my:NumericalAxis FontSize="12">
+                    <my:NumericalAxis.Header>
+                        <TextBlock Foreground="Black">Scores</TextBlock>
+                    </my:NumericalAxis.Header>
+                </my:NumericalAxis>
             </my:SfChart.SecondaryAxis>
             <my:SfChart.Legend>
                 <my:ChartLegend Visibility="Visible"/>
             </my:SfChart.Legend>
 
-            <my:ColumnSeries x:Name="AngerSer" Label="Anger" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="AngerScoreMean" YBindingPath="AngerScoreMean"/>
+            <my:ColumnSeries x:Name="AngerSer" Label="Anger" Foreground="Black" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="AngerScoreMean" YBindingPath="AngerScoreMean"/>
             <my:ColumnSeries x:Name="ConSer" Label="Contempt" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="ContemptScoreMean" YBindingPath="ContemptScoreMean"/>
             <my:ColumnSeries x:Name="DisSer" Label="Disgust" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="DisgustScoreMean" YBindingPath="DisgustScoreMean"/>
             <my:ColumnSeries x:Name="FearSer" Label="Fear" ItemsSource="{Binding SelectedMediaGroup}" XBindingPath="FearScoreMean" YBindingPath="FearScoreMean"/>

@@ -125,22 +125,44 @@ namespace TimelineMe.Common
             return true;
         }
 
-        public async Task RemoveMedia(StorageFile media)
+        public async Task RemoveMedia(Media media)
         {
             try
             {
-                Media toDeleteMedia = MediaList.Where(x => x.MediaName == media.Name).FirstOrDefault();
+                Media toDeleteMedia = MediaList.Where(x => x.MediaName == media.MediaName).FirstOrDefault();
                 using (var db = new MediaContext())
                 {
                     db.Medias.Remove(toDeleteMedia);
                     db.SaveChanges();
                 }
                 MediaList.Remove(toDeleteMedia);
+                StorageFile fileToDelete = await localFolder.GetFileAsync(media.MediaName);
+                await fileToDelete.DeleteAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 
+            }
+        }
+        public async Task RemoveMedia(MediaGroup mediaG)
+        {
+            try
+            {
+                MediaGroup toDeleteMediaG = MediaGroupList.Where(x => x.CompostionFileName == mediaG.CompostionFileName).FirstOrDefault();
+                using (var db = new MediaContext())
+                {
+                    db.MediaGroups.Remove(toDeleteMediaG);
+                    db.SaveChanges();
+                }
+                MediaGroupList.Remove(toDeleteMediaG);
+                StorageFile fileToDelete = await localFolder.GetFileAsync(mediaG.CompostionFileName + ".cmp");
+                await fileToDelete.DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+
+
             }
         }
 

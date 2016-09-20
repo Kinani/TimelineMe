@@ -35,5 +35,10 @@ namespace TimelineMe.Views
         {
             this.InitializeComponent();
         }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            Vm.CleanGalleryUI();
+        }
     }
 }
