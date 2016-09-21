@@ -8,6 +8,61 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer>
+            <StackPanel x:Name="HeaderGrid" VerticalAlignment="Top" Margin="4,0,0,0">
+                <TextBlock Style="{StaticResource  SubheaderTextBlockStyle}" Foreground="Black">
+                Application Details
+                </TextBlock>
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Foreground="Black" Text="TimelineMe - Version 1.0.0"/>
+                <HyperlinkButton Margin="10,0,0,0" NavigateUri="https://kinani95.wordpress.com/privacy-policy/">
+                    <TextBlock Foreground="Black" Style="{StaticResource BodyTextBlockStyle}">TimelineMe Privacy Policy</TextBlock>
+                </HyperlinkButton>
+                <TextBlock Foreground="Black" Margin="0,4,0,0" Style="{StaticResource SubheaderTextBlockStyle}" Text="The idea behinde TLME"/>
+                <TextBlock Foreground="Black" Style="{StaticResource BodyTextBlockStyle}" Text="TLME idea was emerged from a personal need, The need of observing myself.&#x0d;&#x0a;Observing the time acts over me, have always fascinated me. To see myself growing and constantly changing!
+                       &#x0d;&#x0a;&#x0d;&#x0a;TLME is an open-source project. developed by Abdelrahman El Kinani."></TextBlock>
+                <TextBlock Foreground="Black" Margin="0,4,0,0" Style="{StaticResource SubheaderTextBlockStyle}" Text="Contact Developer"/>
+                <HyperlinkButton NavigateUri="https://kinani95.wordpress.com">
+                    <StackPanel x:Name="Blog" Orientation="Horizontal">
+                        <Image Source="ms-appx:///Assets/BlogIcon.png"/>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Foreground="#FF284BEA" Text="blog" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </HyperlinkButton>
+                <HyperlinkButton NavigateUri="mailto:kinani95@outlook.com">
+                    <StackPanel x:Name="email" Orientation="Horizontal">
+                        <Image Source="ms-appx:///Assets/EmailIcon.png"/>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Foreground="#FF284BEA" Text="send me email" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </HyperlinkButton>
+                <HyperlinkButton NavigateUri="https://twitter.com/Kinani95">
+                    <StackPanel x:Name="twitter" Orientation="Horizontal">
+                        <Image Source="ms-appx:///Assets/TwitterIcon.png"/>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Foreground="#FF284BEA" Text="tweet to me" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </HyperlinkButton>
+                <HyperlinkButton NavigateUri="https://github.com/Kinani/TimelineMe">
+                    <StackPanel x:Name="github" Orientation="Horizontal">
+                        <Image Source="ms-appx:///Assets/People.png"/>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Foreground="#FF284BEA" Text="TLME on GitHub" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </HyperlinkButton>
+                <HyperlinkButton NavigateUri="{x:Bind RateStore}">
+                    <StackPanel x:Name="rate" Orientation="Horizontal">
+                        <Image Source="ms-appx:///Assets/RateIcon.png"/>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Foreground="#FF284BEA" Text="rate application" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </HyperlinkButton>
+                <StackPanel x:Name="ChangeLogPanel">
+                    <TextBlock Foreground="Black" Style="{StaticResource SubheaderTextBlockStyle}" Text="Change Log"></TextBlock>
+                    <StackPanel>
+                        <TextBlock Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Margin="4,0,0,0" Text="Version 1.0.0"/>
+                        <TextBlock Foreground="Black" Style="{StaticResource BodyTextBlockStyle}" Margin="4,0,0,0" Text="2020/12/1"/>
+                        <TextBlock Foreground="Black" Margin="8,0,0,0" Text="- Initial Release"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

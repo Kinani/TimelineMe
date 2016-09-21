@@ -22,6 +22,13 @@ namespace TimelineMe.Views
     /// </summary>
     public sealed partial class ContactDeveloper : Page
     {
+        public Uri RateStore
+        {
+            get
+            {
+                return new Uri(string.Format("ms-windows-store:REVIEW?PFN={0}", Windows.ApplicationModel.Package.Current.Id.FamilyName));
+            }
+        }
         public ContactDeveloper()
         {
             this.InitializeComponent();
